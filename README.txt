@@ -1,1 +1,1 @@
-JMeter plugin for AMF translating.
+JMeter plugin for translating AMF protocol.
