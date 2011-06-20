@@ -24,5 +24,11 @@
             <scope>system</scope>
             <systemPath>${jmeter.home}/lib/jorphan.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>com.adobe.blazeds</groupId>
+            <artifactId>blazeds-core</artifactId>
+            <version>3.2.0.3978</version>
+        </dependency>
     </dependencies>
 </project>
