@@ -21,9 +21,15 @@ public class SenderGUI extends AbstractSamplerGui {
     private void init() {
         setLayout(new BorderLayout());
         setBorder(makeBorder());
+        TextField messageField = new TextField();
+        messageField.setText("Hello");
+        messageField.setEditable(false);
         Box box = Box.createVerticalBox();
         box.add(makeTitlePanel());
+        Box messageBox = Box.createVerticalBox();
+        messageBox.add(makeScrollPane(messageField));
         add(box, BorderLayout.NORTH);
+        add(messageBox, BorderLayout.CENTER);
     }
 
 
