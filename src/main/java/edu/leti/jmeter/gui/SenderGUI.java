@@ -34,11 +34,11 @@ public class SenderGUI extends AbstractSamplerGui {
 
 
     public String getStaticLabel() {
-        return "AMF message sender";  //To change body of implemented methods use File | Settings | File Templates.
+        return "AMF message sender";
     }
 
     public String getLabelResource() {
-        return getClass().getCanonicalName();  //To change body of implemented methods use File | Settings | File Templates.
+        return getClass().getCanonicalName();
     }
 
     public TestElement createTestElement() {

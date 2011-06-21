@@ -18,7 +18,6 @@ public class AMFMessageTranslatorTest {
     private AMFMessageTranslator translator = new AMFMessageTranslator();
     private File file = new File("Messages.txt");
 
-
     @Test
     public void testWriteReadMessages() throws ClassNotFoundException, IOException {
         ActionMessage originalMessage = new ActionMessage(MessageIOConstants.AMF0);

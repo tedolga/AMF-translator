@@ -7,7 +7,8 @@ import flex.messaging.io.amf.client.exceptions.ClientStatusException;
  * @version 1.0
  */
 public class RequestsHandler {
-    String url = "http://localhost:8400/helloworld/messagebroker/amf";
+
+    private final String URL = "http://localhost:8400/helloworld/messagebroker/amf";
 
 
     public void getMessage() throws ClientStatusException {
