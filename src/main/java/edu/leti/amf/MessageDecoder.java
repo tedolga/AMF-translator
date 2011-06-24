@@ -1,14 +1,13 @@
 package edu.leti.amf;
 
 import flex.messaging.io.SerializationContext;
-import flex.messaging.io.amf.ActionContext;
-import flex.messaging.io.amf.ActionMessage;
-import flex.messaging.io.amf.AmfMessageDeserializer;
-import flex.messaging.io.amf.AmfTrace;
+import flex.messaging.io.amf.*;
+import flex.messaging.messages.AbstractMessage;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author Tedikova O.
@@ -23,10 +22,11 @@ public class MessageDecoder {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         MessageDecoder decoder = new MessageDecoder(new File("SAYHELLO.binary"));
-        decoder.decodeBody();
+        String dsId = decoder.getDSId(decoder.printMessage());
+        System.out.println("DSId = " + dsId);
     }
 
-    public ActionMessage decodeBody() throws IOException, ClassNotFoundException {
+    public ActionMessage printMessage() throws IOException, ClassNotFoundException {
         FileInputStream fileInputStream = null;
         ActionMessage message = new ActionMessage();
         try {
@@ -43,6 +43,24 @@ public class MessageDecoder {
             }
         }
         return message;
+    }
+
+    public String getDSId(ActionMessage message) {
+        String dsID = null;
+        for (int i = 0; i < message.getBodyCount(); i++) {
+            MessageBody body = message.getBody(i);
+            Object[] bodyData = (Object[]) body.getData();
+            for (int j = 0; j < bodyData.length; j++) {
+                if (bodyData[j] instanceof AbstractMessage) {
+                    AbstractMessage abstractMessage = (AbstractMessage) bodyData[0];
+                    Map headers = abstractMessage.getHeaders();
+                    if (headers.containsKey("DSId")) {
+                        dsID = (String) headers.get("DSId");
+                    }
+                }
+            }
+        }
+        return dsID;
     }
 
 }

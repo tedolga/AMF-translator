@@ -41,6 +41,10 @@ public class SenderGUI extends AbstractSamplerGui {
         return getClass().getCanonicalName();
     }
 
+    public void configureTestElement(TestElement element) {
+
+    }
+
     public TestElement createTestElement() {
         AMFSender sender = new AMFSender();
         modifyTestElement(sender);
