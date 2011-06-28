@@ -7,6 +7,7 @@ import flex.messaging.messages.AbstractMessage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -16,32 +17,31 @@ import java.util.Map;
 public class MessageDecoder {
     private File binaryFile;
 
-    public MessageDecoder(File binaryFile) {
-        this.binaryFile = binaryFile;
-    }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        MessageDecoder decoder = new MessageDecoder(new File("SAYHELLO.binary"));
-        String dsId = decoder.getDSId(decoder.printMessage());
+        File file = new File("Registration.binary");
+        String dsId;
+        MessageDecoder decoder = new MessageDecoder();
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(file);
+            dsId = decoder.getDSId(decoder.printMessage(fileInputStream));
+        } finally {
+            if (fileInputStream != null)
+                fileInputStream.close();
+        }
         System.out.println("DSId = " + dsId);
     }
 
-    public ActionMessage printMessage() throws IOException, ClassNotFoundException {
-        FileInputStream fileInputStream = null;
+    public ActionMessage printMessage(InputStream inputStream) throws IOException, ClassNotFoundException {
         ActionMessage message = new ActionMessage();
-        try {
-            fileInputStream = new FileInputStream(binaryFile);
-            AmfMessageDeserializer deserializer = new AmfMessageDeserializer();
-            ActionContext context = new ActionContext();
-            AmfTrace amfTrace = new AmfTrace();
-            deserializer.initialize(SerializationContext.getSerializationContext(), fileInputStream, amfTrace);
-            deserializer.readMessage(message, context);
-            System.out.println(amfTrace.toString());
-        } finally {
-            if (fileInputStream != null) {
-                fileInputStream.close();
-            }
-        }
+        AmfMessageDeserializer deserializer = new AmfMessageDeserializer();
+        ActionContext context = new ActionContext();
+        AmfTrace amfTrace = new AmfTrace();
+        SerializationContext serializationContext = SerializationContext.getSerializationContext();
+        deserializer.initialize(serializationContext, inputStream, amfTrace);
+        deserializer.readMessage(message, context);
+        System.out.println(amfTrace.toString());
         return message;
     }
 
