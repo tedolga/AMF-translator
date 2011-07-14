@@ -8,10 +8,7 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * @author Tedikova O.
@@ -24,17 +21,20 @@ public class AMFClient {
     private BasicCookieStore cookieStore;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        AMFClient client = new AMFClient("localhost:8400/registration");
+        AMFClient client = new AMFClient("localhost:8400/samples");
         MessageDecoder messageDecoder = new MessageDecoder();
-        File file = new File("PING.binary");
+        File file = new File("PingToChat.binary");
         HttpResponse response = client.sendMessage(file);
+        System.out.println(response.getStatusLine());
         InputStream inputStream = null;
+        File responseFile = new File("Response.binary");
+        FileOutputStream fileOutputStream = null;
         try {
-            inputStream = response.getEntity().getContent();
-            messageDecoder.printMessage(inputStream);
+            fileOutputStream = new FileOutputStream(responseFile);
+            response.getEntity().writeTo(fileOutputStream);
         } finally {
-            if (inputStream != null)
-                inputStream.close();
+            if (fileOutputStream != null)
+                fileOutputStream.close();
         }
     }
 
@@ -48,7 +48,7 @@ public class AMFClient {
 
     public HttpResponse sendMessage(File file) throws IOException {
         cookieStore.clear();
-        HttpPost post = new HttpPost("http://" + hostURL + "/messagebroker/amf");
+        HttpPost post = new HttpPost("http://" + hostURL + "/messagebroker/streamingamf");
         FileInputStream fileInputStream = null;
         InputStreamEntity entity;
         HttpResponse response;
