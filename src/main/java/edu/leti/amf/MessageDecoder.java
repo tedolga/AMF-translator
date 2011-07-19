@@ -1,5 +1,6 @@
 package edu.leti.amf;
 
+import com.sun.xml.internal.ws.wsdl.writer.document.Message;
 import flex.messaging.io.ClassAliasRegistry;
 import flex.messaging.io.SerializationContext;
 import flex.messaging.io.amf.*;
@@ -8,6 +9,7 @@ import flex.messaging.messages.AcknowledgeMessageExt;
 import flex.messaging.messages.AsyncMessageExt;
 import flex.messaging.messages.CommandMessageExt;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,22 +22,6 @@ import java.util.Map;
  */
 public class MessageDecoder {
     private File binaryFile;
-
-
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        File file = new File("Registration.binary");
-        String dsId;
-        MessageDecoder decoder = new MessageDecoder();
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(file);
-            dsId = decoder.getDSId(decoder.printMessage(fileInputStream));
-        } finally {
-            if (fileInputStream != null)
-                fileInputStream.close();
-        }
-        System.out.println("DSId = " + dsId);
-    }
 
     public ActionMessage printMessage(InputStream inputStream) throws IOException, ClassNotFoundException {
         ClassAliasRegistry registry = ClassAliasRegistry.getRegistry();
@@ -57,6 +43,8 @@ public class MessageDecoder {
         String dsID = null;
         for (int i = 0; i < message.getBodyCount(); i++) {
             MessageBody body = message.getBody(i);
+            System.out.println(message.getVersion());
+            System.out.println(message.getHeaderCount());
             String bodyClassName = body.getData().getClass().getCanonicalName();
             System.out.println(bodyClassName);
 //            Object bodyData=(Object) body.getData();
