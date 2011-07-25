@@ -1,6 +1,5 @@
 package edu.leti.amf;
 
-import com.sun.xml.internal.ws.wsdl.writer.document.Message;
 import flex.messaging.io.ClassAliasRegistry;
 import flex.messaging.io.SerializationContext;
 import flex.messaging.io.amf.*;
@@ -9,20 +8,27 @@ import flex.messaging.messages.AcknowledgeMessageExt;
 import flex.messaging.messages.AsyncMessageExt;
 import flex.messaging.messages.CommandMessageExt;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
 /**
+ * Класс для работы с бинарными amf сообщениями
+ *
  * @author Tedikova O.
  * @version 1.0
  */
 public class MessageDecoder {
-    private File binaryFile;
 
+    /**
+     * Метод считывает amf сообщение  из входного потока и преобразует его в экземпляр
+     * Action Message
+     *
+     * @param inputStream входной поток , содержащий amf сообщение
+     * @return  сообщение,преобразованное в ActionMessage
+     * @throws IOException в случае ошибки чтения/записи
+     * @throws ClassNotFoundException в случае ошибки работы с классами
+     */
     public ActionMessage printMessage(InputStream inputStream) throws IOException, ClassNotFoundException {
         ClassAliasRegistry registry = ClassAliasRegistry.getRegistry();
         registry.registerAlias(AsyncMessageExt.CLASS_ALIAS, AsyncMessageExt.class.getName());
@@ -35,10 +41,18 @@ public class MessageDecoder {
         SerializationContext serializationContext = SerializationContext.getSerializationContext();
         deserializer.initialize(serializationContext, inputStream, amfTrace);
         deserializer.readMessage(message, context);
+        Amf3Input amf3Input=new Amf3Input(serializationContext);
         System.out.println(amfTrace.toString());
         return message;
     }
 
+    /**
+     * Метод вырезает из amf запроса DSId
+     *
+     * @param message запрос
+     * @return DSId
+     * @throws ClassNotFoundException d случае ошибки работы с классом
+     */
     public String getDSId(ActionMessage message) throws ClassNotFoundException {
         String dsID = null;
         for (int i = 0; i < message.getBodyCount(); i++) {
@@ -47,14 +61,6 @@ public class MessageDecoder {
             System.out.println(message.getHeaderCount());
             String bodyClassName = body.getData().getClass().getCanonicalName();
             System.out.println(bodyClassName);
-//            Object bodyData=(Object) body.getData();
-//                if (bodyData instanceof AbstractMessage) {
-//                    AbstractMessage abstractMessage = (AbstractMessage) bodyData;
-//                    Map headers = abstractMessage.getHeaders();
-//                    if (headers.containsKey("DSId")) {
-//                        dsID = (String) headers.get("DSId");
-//                    }
-//                }
             Object[] bodyData = (Object[]) body.getData();
             if (bodyData[0] instanceof AbstractMessage) {
                 AbstractMessage abstractMessage = (AbstractMessage) bodyData[0];
