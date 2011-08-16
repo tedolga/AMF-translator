@@ -1,6 +1,7 @@
 package edu.leti.jmeter.gui;
 
 import edu.leti.jmeter.elements.AMFSender;
+import org.apache.jmeter.protocol.http.config.gui.MultipartUrlConfigGui;
 import org.apache.jmeter.protocol.http.sampler.HTTPSampler;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
@@ -13,25 +14,27 @@ import java.awt.*;
  * @version 1.0
  */
 public class SenderGUI extends AbstractSamplerGui {
+    private MultipartUrlConfigGui urlConfigGui;
+    private AMFRequestPanel amfPanel;
 
     public SenderGUI() {
+        super();
         init();
     }
 
     private void init() {
         setLayout(new BorderLayout());
         setBorder(makeBorder());
-        TextField messageField = new TextField();
-        messageField.setText("Here will be your message!");
-        messageField.setEditable(false);
+
+        urlConfigGui = new MultipartUrlConfigGui();
+        amfPanel = new AMFRequestPanel();
+
         Box box = Box.createVerticalBox();
         box.add(makeTitlePanel());
-        Box messageBox = Box.createVerticalBox();
-        messageBox.add(makeScrollPane(messageField));
-        add(box, BorderLayout.NORTH);
-        add(messageBox, BorderLayout.CENTER);
+        box.add(urlConfigGui, BorderLayout.CENTER);
+        box.add(amfPanel, BorderLayout.CENTER);
+        add(box, BorderLayout.CENTER);
     }
-
 
     public String getStaticLabel() {
         return "AMF message sender";

@@ -2,7 +2,10 @@ package edu.leti.amf;
 
 import flex.messaging.io.ClassAliasRegistry;
 import flex.messaging.io.SerializationContext;
-import flex.messaging.io.amf.*;
+import flex.messaging.io.amf.ActionContext;
+import flex.messaging.io.amf.ActionMessage;
+import flex.messaging.io.amf.AmfTrace;
+import flex.messaging.io.amf.MessageBody;
 import flex.messaging.messages.AbstractMessage;
 import flex.messaging.messages.AcknowledgeMessageExt;
 import flex.messaging.messages.AsyncMessageExt;
@@ -25,8 +28,8 @@ public class MessageDecoder {
      * Action Message
      *
      * @param inputStream входной поток , содержащий amf сообщение
-     * @return  сообщение,преобразованное в ActionMessage
-     * @throws IOException в случае ошибки чтения/записи
+     * @return сообщение, преобразованное в ActionMessage
+     * @throws IOException            в случае ошибки чтения/записи
      * @throws ClassNotFoundException в случае ошибки работы с классами
      */
     public ActionMessage printMessage(InputStream inputStream) throws IOException, ClassNotFoundException {
@@ -34,15 +37,16 @@ public class MessageDecoder {
         registry.registerAlias(AsyncMessageExt.CLASS_ALIAS, AsyncMessageExt.class.getName());
         registry.registerAlias(AcknowledgeMessageExt.CLASS_ALIAS, AcknowledgeMessageExt.class.getName());
         registry.registerAlias(CommandMessageExt.CLASS_ALIAS, CommandMessageExt.class.getName());
+
+        Deserializer deserializer = new Deserializer();
         ActionMessage message = new ActionMessage();
-        AmfMessageDeserializer deserializer = new AmfMessageDeserializer();
         ActionContext context = new ActionContext();
         AmfTrace amfTrace = new AmfTrace();
         SerializationContext serializationContext = SerializationContext.getSerializationContext();
         deserializer.initialize(serializationContext, inputStream, amfTrace);
         deserializer.readMessage(message, context);
-        Amf3Input amf3Input=new Amf3Input(serializationContext);
         System.out.println(amfTrace.toString());
+        parseMessageBody(deserializer);
         return message;
     }
 
@@ -73,6 +77,10 @@ public class MessageDecoder {
             }
         }
         return dsID;
+    }
+
+    public void parseMessageBody(Deserializer deserializer) throws IOException, ClassNotFoundException {
+
     }
 
 }
