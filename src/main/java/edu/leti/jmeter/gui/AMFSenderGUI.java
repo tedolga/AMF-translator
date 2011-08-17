@@ -13,11 +13,11 @@ import java.awt.*;
  * @author Tedikova O.
  * @version 1.0
  */
-public class SenderGUI extends AbstractSamplerGui {
+public class AMFSenderGUI extends AbstractSamplerGui {
     private MultipartUrlConfigGui urlConfigGui;
     private AMFRequestPanel amfPanel;
 
-    public SenderGUI() {
+    public AMFSenderGUI() {
         super();
         init();
     }
