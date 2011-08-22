@@ -1,8 +1,7 @@
-package edu.leti.jmeter.gui;
+package edu.leti.jmeter.sampler.gui;
 
-import edu.leti.jmeter.elements.AMFSender;
+import edu.leti.jmeter.sampler.AMFSender;
 import org.apache.jmeter.protocol.http.config.gui.MultipartUrlConfigGui;
-import org.apache.jmeter.protocol.http.sampler.HTTPSampler;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 
@@ -44,8 +43,10 @@ public class AMFSenderGUI extends AbstractSamplerGui {
         return getClass().getCanonicalName();
     }
 
-    public void configureTestElement(TestElement element) {
-
+    @Override
+    public void configure(TestElement el) {
+        super.configure(el);
+        urlConfigGui.configure(el);
     }
 
     public TestElement createTestElement() {
@@ -56,8 +57,6 @@ public class AMFSenderGUI extends AbstractSamplerGui {
 
     public void modifyTestElement(TestElement testElement) {
         super.configureTestElement(testElement);
-        if (testElement instanceof HTTPSampler) {
-            HTTPSampler sampler = (HTTPSampler) testElement;
-        }
+        urlConfigGui.modifyTestElement(testElement);
     }
 }

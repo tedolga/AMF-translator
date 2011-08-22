@@ -9,6 +9,7 @@ import flex.messaging.io.amf.AmfMessageDeserializer;
  */
 
 public class Deserializer extends AmfMessageDeserializer {
+
     public ActionMessageInput getAmfInput() {
         return this.amfIn;
     }

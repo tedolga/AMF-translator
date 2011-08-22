@@ -1,4 +1,4 @@
-package edu.leti.jmeter.elements;
+package edu.leti.jmeter.sampler;
 
 import org.apache.jmeter.protocol.http.sampler.HTTPSampler;
 
@@ -9,3 +9,5 @@ import org.apache.jmeter.protocol.http.sampler.HTTPSampler;
 public class AMFSender extends HTTPSampler {
 
 }
+
+
