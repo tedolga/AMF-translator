@@ -44,9 +44,9 @@ public class AMFSenderGUI extends AbstractSamplerGui {
     }
 
     @Override
-    public void configure(TestElement el) {
-        super.configure(el);
-        urlConfigGui.configure(el);
+    public void configure(TestElement element) {
+        super.configure(element);
+        urlConfigGui.configure(element);
     }
 
     public TestElement createTestElement() {
@@ -56,7 +56,15 @@ public class AMFSenderGUI extends AbstractSamplerGui {
     }
 
     public void modifyTestElement(TestElement testElement) {
+        testElement.clear();
         super.configureTestElement(testElement);
         urlConfigGui.modifyTestElement(testElement);
+        this.configure(testElement);
+    }
+
+    @Override
+    public void clearGui() {
+        super.clearGui();
+        urlConfigGui.clear();
     }
 }
