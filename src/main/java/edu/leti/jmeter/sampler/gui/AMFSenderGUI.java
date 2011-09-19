@@ -7,6 +7,8 @@ import org.apache.jmeter.testelement.TestElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 /**
  * @author Tedikova O.
@@ -57,9 +59,12 @@ public class AMFSenderGUI extends AbstractSamplerGui {
 
     public void modifyTestElement(TestElement testElement) {
         testElement.clear();
-        super.configureTestElement(testElement);
-        urlConfigGui.modifyTestElement(testElement);
-        this.configure(testElement);
+        AMFSender amfSender = (AMFSender) testElement;
+        super.configureTestElement(amfSender);
+        urlConfigGui.modifyTestElement(amfSender);
+        InputStream amfInput = new ByteArrayInputStream(amfPanel.getMessageArea().getText().getBytes());
+        amfSender.setAmfMessage(amfInput);
+        this.configure(amfSender);
     }
 
     @Override

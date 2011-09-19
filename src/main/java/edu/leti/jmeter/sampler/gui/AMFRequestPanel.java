@@ -35,6 +35,10 @@ public class AMFRequestPanel extends JPanel {
         add(messageArea, c);
     }
 
+    public JLabeledTextArea getMessageArea() {
+        return this.messageArea;
+    }
+
     public void clearGui() {
     }
 }
