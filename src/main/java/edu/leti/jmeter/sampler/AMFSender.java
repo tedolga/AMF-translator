@@ -7,7 +7,6 @@ import org.apache.jmeter.protocol.http.sampler.HTTPSampler;
 import org.apache.jmeter.util.JMeterUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.BindException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -36,9 +35,9 @@ public class AMFSender extends HTTPSampler {
     private volatile HttpURLConnection savedConn;
 
 
-    private AMFPostWriter postOrPutWriter;
+    private transient AMFPostWriter postWriter;
 
-    private InputStream amfMessage;
+    private byte[] amfMessage;
 
     @Override
     protected HTTPSampleResult sample(URL url, String method, boolean areFollowingRedirect, int frameDepth) {
@@ -188,16 +187,20 @@ public class AMFSender extends HTTPSampler {
         }
     }
 
-    public void setAmfMessage(InputStream inputStream) {
-        this.amfMessage = inputStream;
+    public void setAmfMessage(byte[] amfMessage) {
+        this.amfMessage = amfMessage;
     }
 
-    public InputStream getAmfMessage() {
+    public byte[] getAmfMessage() {
         return this.amfMessage;
     }
 
     private String sendPutData(URLConnection connection) throws IOException {
-        return postOrPutWriter.sendPostData(connection, this);
+        return postWriter.sendPostData(connection, this);
+    }
+
+    protected String sendPostData(URLConnection connection) throws IOException {
+        return postWriter.sendPostData(connection, this);
     }
 
     private void saveConnectionCookies(HttpURLConnection conn, URL u, CookieManager cookieManager) {
@@ -208,6 +211,16 @@ public class AMFSender extends HTTPSampler {
                 }
             }
         }
+    }
+
+    protected void setPostHeaders(URLConnection conn) throws IOException {
+        postWriter = new AMFPostWriter();
+        postWriter.setHeaders(conn, this);
+    }
+
+    private void setPutHeaders(URLConnection conn) throws IOException {
+        postWriter = new AMFPostWriter();
+        postWriter.setHeaders(conn, this);
     }
 
 }

@@ -1,7 +1,5 @@
 package edu.leti.jmeter.sampler.gui;
 
-import org.apache.jorphan.gui.JLabeledTextArea;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,11 +8,11 @@ import java.awt.*;
  * @version 1.0
  */
 
-public class AMFRequestPanel extends JPanel {
+public class AMFRequestGUI extends JPanel {
 
-    private JLabeledTextArea messageArea;
+    private AMFMessageArea messageArea;
 
-    public AMFRequestPanel() {
+    public AMFRequestGUI() {
         init();
     }
 
@@ -28,15 +26,13 @@ public class AMFRequestPanel extends JPanel {
         c.gridx = 1;
         c.gridy = 1;
         c.weightx = 1;
-
-        messageArea = new JLabeledTextArea("AMF Message");
-        messageArea.setPreferredSize(new Dimension(0, 500));
-
+        messageArea = new AMFMessageArea("AMF Message");
+        //messageArea.setPreferredSize(new Dimension(0, 500));
         add(messageArea, c);
     }
 
-    public JLabeledTextArea getMessageArea() {
-        return this.messageArea;
+    public String getMessage() {
+        return messageArea.getText();
     }
 
     public void clearGui() {

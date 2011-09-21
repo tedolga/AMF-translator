@@ -22,16 +22,17 @@ public class AMFPostWriter extends PostWriter {
         // Buffer to hold the post body, except file content
         StringBuilder postedBody = new StringBuilder(1000);
 
-        HTTPFileArg files[] = sampler.getHTTPFiles();
+        AMFSender amfSender = (AMFSender) sampler;
+        HTTPFileArg files[] = amfSender.getHTTPFiles();
 
-        String contentEncoding = sampler.getContentEncoding();
+        String contentEncoding = amfSender.getContentEncoding();
         if (contentEncoding == null || contentEncoding.length() == 0) {
             contentEncoding = ENCODING;
         }
 
         // Check if we should do a multipart/form-data or an
         // application/x-www-form-urlencoded post request
-        if (sampler.getUseMultipartForPost()) {
+        if (amfSender.getUseMultipartForPost()) {
             OutputStream out = connection.getOutputStream();
 
             // Write the form data post body, which we have constructed
@@ -71,29 +72,45 @@ public class AMFPostWriter extends PostWriter {
             out.flush();
             out.close();
         } else {
-            // If there are no arguments, we can send a file as the body of the request
-            if (sampler.getArguments() != null && !sampler.hasArguments() && sampler.getSendFileAsPostBody()) {
+//            // If there are no arguments, we can send a file as the body of the request
+//            if (amfSender.getArguments() != null && !amfSender.hasArguments() && amfSender.getSendFileAsPostBody()) {
+//                OutputStream out = connection.getOutputStream();
+//                // we're sure that there is at least one file because of
+//                // getSendFileAsPostBody method's return value.
+//                HTTPFileArg file = files[0];
+//                writeFileToStream(file.getPath(), out);
+//                out.flush();
+//                out.close();
+//
+//                // We just add placeholder text for file content
+//                postedBody.append("<actual file content, not shown here>"); // $NON-NLS-1$
+            if (amfSender.getAmfMessage() != null) {
                 OutputStream out = connection.getOutputStream();
-                // we're sure that there is at least one file because of
-                // getSendFileAsPostBody method's return value.
-                HTTPFileArg file = files[0];
-                writeFileToStream(file.getPath(), out);
+                out.write(amfSender.getAmfMessage());
                 out.flush();
                 out.close();
 
-                // We just add placeholder text for file content
-                postedBody.append("<actual file content, not shown here>"); // $NON-NLS-1$
-            } else if (formDataUrlEncoded != null) { // may be null for PUT
-                // In an application/x-www-form-urlencoded request, we only support
-                // parameters, no file upload is allowed
+                postedBody.append(amfSender.getAmfMessage());
+            } else {
                 OutputStream out = connection.getOutputStream();
-                out.write(formDataUrlEncoded);
+                out.write("No message!".getBytes());
                 out.flush();
                 out.close();
 
-                postedBody.append(new String(formDataUrlEncoded, contentEncoding));
+                postedBody.append("No message!");
             }
         }
+//        else if (amfSender.getAmfMessage() != null) { // may be null for PUT
+//                // In an application/x-www-form-urlencoded request, we only support
+//                // parameters, no file upload is allowed
+//                OutputStream out = connection.getOutputStream();
+//                out.write(amfSender.getAmfMessage());
+//                out.flush();
+//                out.close();
+//
+//                postedBody.append(new String(amfSender.getAmfMessage(), contentEncoding));
+//            }
+        // }
         return postedBody.toString();
     }
 

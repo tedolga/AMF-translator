@@ -7,8 +7,6 @@ import org.apache.jmeter.testelement.TestElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
 /**
  * @author Tedikova O.
@@ -16,7 +14,7 @@ import java.io.InputStream;
  */
 public class AMFSenderGUI extends AbstractSamplerGui {
     private MultipartUrlConfigGui urlConfigGui;
-    private AMFRequestPanel amfPanel;
+    private AMFRequestGUI amfPanel;
 
     public AMFSenderGUI() {
         super();
@@ -28,7 +26,7 @@ public class AMFSenderGUI extends AbstractSamplerGui {
         setBorder(makeBorder());
 
         urlConfigGui = new MultipartUrlConfigGui();
-        amfPanel = new AMFRequestPanel();
+        amfPanel = new AMFRequestGUI();
 
         Box box = Box.createVerticalBox();
         box.add(makeTitlePanel());
@@ -37,6 +35,7 @@ public class AMFSenderGUI extends AbstractSamplerGui {
         add(box, BorderLayout.CENTER);
     }
 
+    @Override
     public String getStaticLabel() {
         return "AMF message sender";
     }
@@ -48,22 +47,24 @@ public class AMFSenderGUI extends AbstractSamplerGui {
     @Override
     public void configure(TestElement element) {
         super.configure(element);
-        urlConfigGui.configure(element);
+        AMFSender amfSender = (AMFSender) element;
+        urlConfigGui.configure(amfSender);
+        amfSender.setAmfMessage("Hello".getBytes());
     }
 
     public TestElement createTestElement() {
         AMFSender sender = new AMFSender();
         modifyTestElement(sender);
+        sender.setAmfMessage("Hello".getBytes());
         return sender;
     }
 
     public void modifyTestElement(TestElement testElement) {
-        testElement.clear();
+        //testElement.clear();
         AMFSender amfSender = (AMFSender) testElement;
         super.configureTestElement(amfSender);
         urlConfigGui.modifyTestElement(amfSender);
-        InputStream amfInput = new ByteArrayInputStream(amfPanel.getMessageArea().getText().getBytes());
-        amfSender.setAmfMessage(amfInput);
+        amfSender.setAmfMessage("Hello".getBytes());
         this.configure(amfSender);
     }
 
