@@ -49,23 +49,19 @@ public class AMFSenderGUI extends AbstractSamplerGui {
         super.configure(element);
         AMFSender amfSender = (AMFSender) element;
         urlConfigGui.configure(amfSender);
-        amfSender.setAmfMessage("Hello".getBytes());
     }
 
     public TestElement createTestElement() {
         AMFSender sender = new AMFSender();
         modifyTestElement(sender);
-        sender.setAmfMessage("Hello".getBytes());
         return sender;
     }
 
     public void modifyTestElement(TestElement testElement) {
-        //testElement.clear();
         AMFSender amfSender = (AMFSender) testElement;
         super.configureTestElement(amfSender);
         urlConfigGui.modifyTestElement(amfSender);
-        amfSender.setAmfMessage("Hello".getBytes());
-        this.configure(amfSender);
+        amfSender.setAmfMessage("Hello");
     }
 
     @Override

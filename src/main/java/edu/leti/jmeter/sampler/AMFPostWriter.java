@@ -86,7 +86,7 @@ public class AMFPostWriter extends PostWriter {
 //                postedBody.append("<actual file content, not shown here>"); // $NON-NLS-1$
             if (amfSender.getAmfMessage() != null) {
                 OutputStream out = connection.getOutputStream();
-                out.write(amfSender.getAmfMessage());
+                out.write(amfSender.getAmfMessage().getBytes());
                 out.flush();
                 out.close();
 

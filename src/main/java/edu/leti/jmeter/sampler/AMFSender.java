@@ -34,10 +34,7 @@ public class AMFSender extends HTTPSampler {
 
     private volatile HttpURLConnection savedConn;
 
-
     private transient AMFPostWriter postWriter;
-
-    private byte[] amfMessage;
 
     @Override
     protected HTTPSampleResult sample(URL url, String method, boolean areFollowingRedirect, int frameDepth) {
@@ -187,12 +184,12 @@ public class AMFSender extends HTTPSampler {
         }
     }
 
-    public void setAmfMessage(byte[] amfMessage) {
-        this.amfMessage = amfMessage;
+    public void setAmfMessage(String amfMessage) {
+        setProperty("amfMessage",amfMessage);
     }
 
-    public byte[] getAmfMessage() {
-        return this.amfMessage;
+    public String getAmfMessage() {
+        return getPropertyAsString("amfMessage");
     }
 
     private String sendPutData(URLConnection connection) throws IOException {
