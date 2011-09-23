@@ -4,6 +4,7 @@ import edu.leti.jmeter.sampler.AMFSender;
 import org.apache.jmeter.protocol.http.config.gui.MultipartUrlConfigGui;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
+import org.apache.jorphan.gui.JLabeledTextArea;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ import java.awt.*;
  */
 public class AMFSenderGUI extends AbstractSamplerGui {
     private MultipartUrlConfigGui urlConfigGui;
-    private AMFRequestGUI amfPanel;
+    private JLabeledTextArea amfMessageArea;
 
     public AMFSenderGUI() {
         super();
@@ -26,7 +27,11 @@ public class AMFSenderGUI extends AbstractSamplerGui {
         setBorder(makeBorder());
 
         urlConfigGui = new MultipartUrlConfigGui();
-        amfPanel = new AMFRequestGUI();
+        amfMessageArea = new JLabeledTextArea();
+
+        JPanel amfPanel=new JPanel(new BorderLayout());
+        amfPanel.add(amfMessageArea, BorderLayout.CENTER);
+        amfPanel.setBorder(BorderFactory.createTitledBorder("AMF Request"));
 
         Box box = Box.createVerticalBox();
         box.add(makeTitlePanel());
@@ -48,6 +53,7 @@ public class AMFSenderGUI extends AbstractSamplerGui {
     public void configure(TestElement element) {
         super.configure(element);
         AMFSender amfSender = (AMFSender) element;
+        amfMessageArea.setText(amfSender.getAmfMessage());
         urlConfigGui.configure(amfSender);
     }
 
@@ -61,12 +67,13 @@ public class AMFSenderGUI extends AbstractSamplerGui {
         AMFSender amfSender = (AMFSender) testElement;
         super.configureTestElement(amfSender);
         urlConfigGui.modifyTestElement(amfSender);
-        amfSender.setAmfMessage("Hello");
+        amfSender.setAmfMessage(amfMessageArea.getText());
     }
 
     @Override
     public void clearGui() {
         super.clearGui();
         urlConfigGui.clear();
+        amfMessageArea.setText("");
     }
 }
