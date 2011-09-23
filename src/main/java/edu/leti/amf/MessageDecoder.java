@@ -23,6 +23,13 @@ import java.util.Map;
  */
 public class MessageDecoder {
 
+    public MessageDecoder() {
+        ClassAliasRegistry registry = ClassAliasRegistry.getRegistry();
+        registry.registerAlias(AsyncMessageExt.CLASS_ALIAS, AsyncMessageExt.class.getName());
+        registry.registerAlias(AcknowledgeMessageExt.CLASS_ALIAS, AcknowledgeMessageExt.class.getName());
+        registry.registerAlias(CommandMessageExt.CLASS_ALIAS, CommandMessageExt.class.getName());
+    }
+
     /**
      * Метод считывает amf сообщение  из входного потока и преобразует его в экземпляр
      * Action Message
@@ -32,11 +39,7 @@ public class MessageDecoder {
      * @throws IOException            в случае ошибки чтения/записи
      * @throws ClassNotFoundException в случае ошибки работы с классами
      */
-    public ActionMessage printMessage(InputStream inputStream) throws IOException, ClassNotFoundException {
-        ClassAliasRegistry registry = ClassAliasRegistry.getRegistry();
-        registry.registerAlias(AsyncMessageExt.CLASS_ALIAS, AsyncMessageExt.class.getName());
-        registry.registerAlias(AcknowledgeMessageExt.CLASS_ALIAS, AcknowledgeMessageExt.class.getName());
-        registry.registerAlias(CommandMessageExt.CLASS_ALIAS, CommandMessageExt.class.getName());
+    public ActionMessage getActionMessage(InputStream inputStream) throws IOException, ClassNotFoundException {
 
         Deserializer deserializer = new Deserializer();
         ActionMessage message = new ActionMessage();
@@ -46,41 +49,18 @@ public class MessageDecoder {
         deserializer.initialize(serializationContext, inputStream, amfTrace);
         deserializer.readMessage(message, context);
         System.out.println(amfTrace.toString());
-        parseMessageBody(deserializer);
         return message;
     }
 
-    /**
-     * Метод вырезает из amf запроса DSId
-     *
-     * @param message запрос
-     * @return DSId
-     * @throws ClassNotFoundException d случае ошибки работы с классом
-     */
-    public String getDSId(ActionMessage message) throws ClassNotFoundException {
-        String dsID = null;
-        for (int i = 0; i < message.getBodyCount(); i++) {
-            MessageBody body = message.getBody(i);
-            System.out.println(message.getVersion());
-            System.out.println(message.getHeaderCount());
-            String bodyClassName = body.getData().getClass().getCanonicalName();
-            System.out.println(bodyClassName);
-            Object[] bodyData = (Object[]) body.getData();
-            if (bodyData[0] instanceof AbstractMessage) {
-                AbstractMessage abstractMessage = (AbstractMessage) bodyData[0];
-                Object[] abstrMsgBody = (Object[]) abstractMessage.getBody();
-                System.out.println(abstrMsgBody[4].getClass().getCanonicalName());
-                Map headers = abstractMessage.getHeaders();
-                if (headers.containsKey("DSId")) {
-                    dsID = (String) headers.get("DSId");
-                }
-            }
-        }
-        return dsID;
-    }
-
-    public void parseMessageBody(Deserializer deserializer) throws IOException, ClassNotFoundException {
-
+    public String getTrace(InputStream inputStream) throws IOException, ClassNotFoundException {
+        Deserializer deserializer = new Deserializer();
+        ActionMessage message = new ActionMessage();
+        ActionContext context = new ActionContext();
+        AmfTrace amfTrace = new AmfTrace();
+        SerializationContext serializationContext = SerializationContext.getSerializationContext();
+        deserializer.initialize(serializationContext, inputStream, amfTrace);
+        deserializer.readMessage(message, context);
+        return amfTrace.toString();
     }
 
 }

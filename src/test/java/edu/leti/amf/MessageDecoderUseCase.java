@@ -12,15 +12,15 @@ public class MessageDecoderUseCase {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         ClassLoader loader=MessageDecoderUseCase.class.getClassLoader();
         InputStream inputStream=null;
-        String dsId;
+        String message;
         MessageDecoder decoder = new MessageDecoder();
         try {
             inputStream = loader.getResourceAsStream("Registration.binary");
-            dsId = decoder.getDSId(decoder.printMessage(inputStream));
+            message = decoder.getTrace(inputStream);
         } finally {
             if (inputStream != null)
                 inputStream.close();
         }
-        System.out.println("DSId = " + dsId);
+        System.out.println(message);
     }
 }
