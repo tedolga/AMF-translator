@@ -1,6 +1,5 @@
 package edu.leti.jmeter.sampler;
 
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 import edu.leti.amf.MessageDecoder;
 import org.apache.jmeter.protocol.http.control.CacheManager;
 import org.apache.jmeter.protocol.http.control.CookieManager;
@@ -21,23 +20,16 @@ import java.net.URLConnection;
  * @version 1.0
  */
 public class AMFSender extends HTTPSampler {
-    private static final boolean OBEY_CONTENT_LENGTH =
-            JMeterUtils.getPropDefault("httpsampler.obey_contentlength", false); // $NON-NLS-1$
-
-    private static final long serialVersionUID = 233L;
 
     private static final int MAX_CONN_RETRIES =
             JMeterUtils.getPropDefault("http.java.sampler.retries" // $NON-NLS-1$
                     , 10); // Maximum connection retries
-
-    private static final byte[] NULL_BA = new byte[0];// can share these
 
     private static final String AMF_MESSAGE = "amfMessage";
 
     /**
      * Handles writing of a post or put request
      */
-
     private volatile HttpURLConnection savedConn;
 
     private transient AMFPostWriter postWriter;
@@ -89,9 +81,6 @@ public class AMFSender extends HTTPSampler {
                         conn.disconnect();
                     }
                     this.setUseKeepAlive(false);
-                    continue; // try again
-                } catch (IOException e) {
-                    throw e;
                 }
             }
             if (retry > MAX_CONN_RETRIES) {
@@ -134,7 +123,7 @@ public class AMFSender extends HTTPSampler {
                 if (respMsg != null) {// Bug 41902 - NPE
                     try {
                         errorLevel = Integer.parseInt(respMsg.substring(0, 3));
-                    } catch (NumberFormatException e) {
+                    } catch (NumberFormatException ignored) {
                     }
                 } else {
                     respMsg = hdr; // for result

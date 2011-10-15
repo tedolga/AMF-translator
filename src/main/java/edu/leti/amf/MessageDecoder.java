@@ -2,7 +2,10 @@ package edu.leti.amf;
 
 import flex.messaging.io.ClassAliasRegistry;
 import flex.messaging.io.SerializationContext;
-import flex.messaging.io.amf.*;
+import flex.messaging.io.amf.ActionContext;
+import flex.messaging.io.amf.ActionMessage;
+import flex.messaging.io.amf.AmfMessageDeserializer;
+import flex.messaging.io.amf.AmfTrace;
 import flex.messaging.messages.AcknowledgeMessageExt;
 import flex.messaging.messages.AsyncMessageExt;
 import flex.messaging.messages.CommandMessageExt;
@@ -37,19 +40,26 @@ public class MessageDecoder {
      */
     public ActionMessage getActionMessage(InputStream inputStream) throws IOException, ClassNotFoundException {
 
-        Deserializer deserializer = new Deserializer();
+        AmfMessageDeserializer deserializer = new AmfMessageDeserializer();
         ActionMessage message = new ActionMessage();
         ActionContext context = new ActionContext();
         AmfTrace amfTrace = new AmfTrace();
         SerializationContext serializationContext = SerializationContext.getSerializationContext();
         deserializer.initialize(serializationContext, inputStream, amfTrace);
         deserializer.readMessage(message, context);
-        System.out.println(amfTrace.toString());
         return message;
     }
 
+    /**
+     * Метод преобразует amf сообщение в читаемый вид
+     *
+     * @param inputStream поток бинарных данных
+     * @return строка сообщения
+     * @throws IOException            в случае ошибки чтения/записи
+     * @throws ClassNotFoundException в случае ошибки работы с классами
+     */
     public String getTrace(InputStream inputStream) throws IOException, ClassNotFoundException {
-        Deserializer deserializer = new Deserializer();
+        AmfMessageDeserializer deserializer = new AmfMessageDeserializer();
         ActionMessage message = new ActionMessage();
         ActionContext context = new ActionContext();
         AmfTrace amfTrace = new AmfTrace();

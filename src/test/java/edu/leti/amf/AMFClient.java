@@ -8,9 +8,14 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
+ * Клиент, отправляющий amf сообщение
+ *
  * @author Tedikova O.
  * @version 1.0
  */
@@ -26,7 +31,6 @@ public class AMFClient {
         File file = new File("C:/projects/AMF-translator/src/test/resources/Ping.binary");
         HttpResponse response = client.sendMessage(file);
         System.out.println(response.getStatusLine());
-        InputStream inputStream = null;
         File responseFile = new File("Response.binary");
         FileOutputStream fileOutputStream = null;
         System.out.println(messageDecoder.getTrace(response.getEntity().getContent()));
