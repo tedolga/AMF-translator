@@ -29,6 +29,7 @@ public class AMFClient {
         InputStream inputStream = null;
         File responseFile = new File("Response.binary");
         FileOutputStream fileOutputStream = null;
+        System.out.println(messageDecoder.getTrace(response.getEntity().getContent()));
         try {
             fileOutputStream = new FileOutputStream(responseFile);
             response.getEntity().writeTo(fileOutputStream);

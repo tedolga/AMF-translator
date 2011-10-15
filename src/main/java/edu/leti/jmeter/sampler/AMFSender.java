@@ -1,12 +1,16 @@
 package edu.leti.jmeter.sampler;
 
+import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
+import edu.leti.amf.MessageDecoder;
 import org.apache.jmeter.protocol.http.control.CacheManager;
 import org.apache.jmeter.protocol.http.control.CookieManager;
 import org.apache.jmeter.protocol.http.sampler.HTTPSampleResult;
 import org.apache.jmeter.protocol.http.sampler.HTTPSampler;
 import org.apache.jmeter.util.JMeterUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.BindException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -27,6 +31,8 @@ public class AMFSender extends HTTPSampler {
                     , 10); // Maximum connection retries
 
     private static final byte[] NULL_BA = new byte[0];// can share these
+
+    private static final String AMF_MESSAGE = "amfMessage";
 
     /**
      * Handles writing of a post or put request
@@ -107,6 +113,14 @@ public class AMFSender extends HTTPSampler {
             // Done with the sampling proper.
 
             // Now collect the results into the HTTPSampleResult:
+            try {
+                InputStream responseStream = new ByteArrayInputStream(responseData);
+                MessageDecoder decoder = new MessageDecoder();
+                String amfTrace = decoder.getTrace(responseStream);
+                responseData = amfTrace.getBytes();
+            } catch (Exception ex) {
+                responseData = ex.getMessage().getBytes();
+            }
 
             res.setResponseData(responseData);
 
@@ -165,7 +179,11 @@ public class AMFSender extends HTTPSampler {
             res = resultProcessing(areFollowingRedirect, frameDepth, res);
 
             return res;
-        } catch (IOException e) {
+        } catch (
+                IOException e
+                )
+
+        {
             res.sampleEnd();
             // We don't want to continue using this connection, even if KeepAlive is set
             if (conn != null) { // May not exist
@@ -175,21 +193,24 @@ public class AMFSender extends HTTPSampler {
             savedConn = null; // we don't want interrupt to try disconnection again
             conn = null; // Don't process again
             return errorResult(e, res);
-        } finally {
+        } finally
+
+        {
             // calling disconnect doesn't close the connection immediately,
             // but indicates we're through with it. The JVM should close
             // it when necessary.
             savedConn = null; // we don't want interrupt to try disconnection again
             disconnect(conn); // Disconnect unless using KeepAlive
         }
+
     }
 
     public void setAmfMessage(String amfMessage) {
-        setProperty("amfMessage",amfMessage);
+        setProperty(AMF_MESSAGE, amfMessage);
     }
 
     public String getAmfMessage() {
-        return getPropertyAsString("amfMessage");
+        return getPropertyAsString(AMF_MESSAGE);
     }
 
     private String sendPutData(URLConnection connection) throws IOException {
@@ -215,10 +236,6 @@ public class AMFSender extends HTTPSampler {
         postWriter.setHeaders(conn, this);
     }
 
-    private void setPutHeaders(URLConnection conn) throws IOException {
-        postWriter = new AMFPostWriter();
-        postWriter.setHeaders(conn, this);
-    }
 
 }
 

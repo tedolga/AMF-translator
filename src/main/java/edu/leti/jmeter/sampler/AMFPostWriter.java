@@ -71,46 +71,22 @@ public class AMFPostWriter extends PostWriter {
 
             out.flush();
             out.close();
+        } else if (amfSender.getAmfMessage() != null) {
+            OutputStream out = connection.getOutputStream();
+            out.write(amfSender.getAmfMessage().getBytes());
+            out.flush();
+            out.close();
+
+            postedBody.append(amfSender.getAmfMessage());
         } else {
-//            // If there are no arguments, we can send a file as the body of the request
-//            if (amfSender.getArguments() != null && !amfSender.hasArguments() && amfSender.getSendFileAsPostBody()) {
-//                OutputStream out = connection.getOutputStream();
-//                // we're sure that there is at least one file because of
-//                // getSendFileAsPostBody method's return value.
-//                HTTPFileArg file = files[0];
-//                writeFileToStream(file.getPath(), out);
-//                out.flush();
-//                out.close();
-//
-//                // We just add placeholder text for file content
-//                postedBody.append("<actual file content, not shown here>"); // $NON-NLS-1$
-            if (amfSender.getAmfMessage() != null) {
-                OutputStream out = connection.getOutputStream();
-                out.write(amfSender.getAmfMessage().getBytes());
-                out.flush();
-                out.close();
+            OutputStream out = connection.getOutputStream();
+            out.write("No message!".getBytes());
+            out.flush();
+            out.close();
 
-                postedBody.append(amfSender.getAmfMessage());
-            } else {
-                OutputStream out = connection.getOutputStream();
-                out.write("No message!".getBytes());
-                out.flush();
-                out.close();
-
-                postedBody.append("No message!");
-            }
+            postedBody.append("No message!");
         }
-//        else if (amfSender.getAmfMessage() != null) { // may be null for PUT
-//                // In an application/x-www-form-urlencoded request, we only support
-//                // parameters, no file upload is allowed
-//                OutputStream out = connection.getOutputStream();
-//                out.write(amfSender.getAmfMessage());
-//                out.flush();
-//                out.close();
-//
-//                postedBody.append(new String(amfSender.getAmfMessage(), contentEncoding));
-//            }
-        // }
+
         return postedBody.toString();
     }
 

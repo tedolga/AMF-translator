@@ -80,6 +80,42 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.adobe.blazeds</groupId>
+                                    <artifactId>blazeds-core</artifactId>
+                                    <version>3.2.0.3978</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
+                                    <destFileName>blazeds-core.jar</destFileName>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.adobe.blazeds</groupId>
+                                    <artifactId>blazeds-common</artifactId>
+                                    <version>3.2.0.3978</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
+                                    <destFileName>blazeds-common.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>

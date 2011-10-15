@@ -2,18 +2,13 @@ package edu.leti.amf;
 
 import flex.messaging.io.ClassAliasRegistry;
 import flex.messaging.io.SerializationContext;
-import flex.messaging.io.amf.ActionContext;
-import flex.messaging.io.amf.ActionMessage;
-import flex.messaging.io.amf.AmfTrace;
-import flex.messaging.io.amf.MessageBody;
-import flex.messaging.messages.AbstractMessage;
+import flex.messaging.io.amf.*;
 import flex.messaging.messages.AcknowledgeMessageExt;
 import flex.messaging.messages.AsyncMessageExt;
 import flex.messaging.messages.CommandMessageExt;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 /**
  * Класс для работы с бинарными amf сообщениями
@@ -22,6 +17,7 @@ import java.util.Map;
  * @version 1.0
  */
 public class MessageDecoder {
+
 
     public MessageDecoder() {
         ClassAliasRegistry registry = ClassAliasRegistry.getRegistry();

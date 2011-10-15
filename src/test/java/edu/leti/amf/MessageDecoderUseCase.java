@@ -17,6 +17,7 @@ public class MessageDecoderUseCase {
         try {
             inputStream = loader.getResourceAsStream("Registration.binary");
             message = decoder.getTrace(inputStream);
+            decoder.getActionMessage(inputStream);
         } finally {
             if (inputStream != null)
                 inputStream.close();
