@@ -1,6 +1,5 @@
-package edu.leti.jmeter.sampler.gui;
+package edu.leti.jmeter.sampler.http;
 
-import edu.leti.jmeter.sampler.AMFSender;
 import org.apache.jmeter.protocol.http.config.gui.MultipartUrlConfigGui;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
@@ -29,7 +28,7 @@ public class AMFSenderGUI extends AbstractSamplerGui {
         urlConfigGui = new MultipartUrlConfigGui();
         amfMessageArea = new JLabeledTextArea();
 
-        JPanel amfPanel=new JPanel(new BorderLayout());
+        JPanel amfPanel = new JPanel(new BorderLayout());
         amfPanel.add(amfMessageArea, BorderLayout.CENTER);
         amfPanel.setBorder(BorderFactory.createTitledBorder("AMF Request"));
 
@@ -52,22 +51,22 @@ public class AMFSenderGUI extends AbstractSamplerGui {
     @Override
     public void configure(TestElement element) {
         super.configure(element);
-        AMFSender amfSender = (AMFSender) element;
-        amfMessageArea.setText(amfSender.getAmfMessage());
-        urlConfigGui.configure(amfSender);
+        AMFHTTPSampler AMFHTTPSampler = (AMFHTTPSampler) element;
+        amfMessageArea.setText(AMFHTTPSampler.getAmfMessage());
+        urlConfigGui.configure(AMFHTTPSampler);
     }
 
     public TestElement createTestElement() {
-        AMFSender sender = new AMFSender();
+        AMFHTTPSampler sender = new AMFHTTPSampler();
         modifyTestElement(sender);
         return sender;
     }
 
     public void modifyTestElement(TestElement testElement) {
-        AMFSender amfSender = (AMFSender) testElement;
-        super.configureTestElement(amfSender);
-        urlConfigGui.modifyTestElement(amfSender);
-        amfSender.setAmfMessage(amfMessageArea.getText());
+        AMFHTTPSampler AMFHTTPSampler = (AMFHTTPSampler) testElement;
+        super.configureTestElement(AMFHTTPSampler);
+        urlConfigGui.modifyTestElement(AMFHTTPSampler);
+        AMFHTTPSampler.setAmfMessage(amfMessageArea.getText());
     }
 
     @Override

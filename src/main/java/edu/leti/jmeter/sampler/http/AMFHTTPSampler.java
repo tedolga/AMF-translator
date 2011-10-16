@@ -1,4 +1,4 @@
-package edu.leti.jmeter.sampler;
+package edu.leti.jmeter.sampler.http;
 
 import edu.leti.amf.MessageDecoder;
 import org.apache.jmeter.protocol.http.control.CacheManager;
@@ -19,7 +19,7 @@ import java.net.URLConnection;
  * @author Tedikova O.
  * @version 1.0
  */
-public class AMFSender extends HTTPSampler {
+public class AMFHTTPSampler extends HTTPSampler {
 
     private static final int MAX_CONN_RETRIES =
             JMeterUtils.getPropDefault("http.java.sampler.retries" // $NON-NLS-1$

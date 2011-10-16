@@ -74,6 +74,25 @@
             <version>3.2.0.3978</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>0.9.30</version>
+            <scope>runtime</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -108,6 +127,33 @@
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
                                     <destFileName>blazeds-common.jar</destFileName>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>ch.qos.logback</groupId>
+                                    <artifactId>logback-classic</artifactId>
+                                    <version>0.9.30</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
+                                    <destFileName>logback-classic.jar</destFileName>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>ch.qos.logback</groupId>
+                                    <artifactId>logback-core</artifactId>
+                                    <version>0.9.30</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
+                                    <destFileName>logback-core.jar</destFileName>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.slf4j</groupId>
+                                    <artifactId>slf4j-api</artifactId>
+                                    <version>1.6.2</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
+                                    <destFileName>slf4j-api.jar</destFileName>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>

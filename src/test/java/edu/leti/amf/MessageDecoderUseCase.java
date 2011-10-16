@@ -10,14 +10,14 @@ import java.io.InputStream;
 
 public class MessageDecoderUseCase {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        ClassLoader loader=MessageDecoderUseCase.class.getClassLoader();
-        InputStream inputStream=null;
+        ClassLoader loader = MessageDecoderUseCase.class.getClassLoader();
+        InputStream inputStream = null;
         String message;
         MessageDecoder decoder = new MessageDecoder();
         try {
             inputStream = loader.getResourceAsStream("Registration.binary");
-            message = decoder.getTrace(inputStream);
             decoder.getActionMessage(inputStream);
+            message = decoder.getTrace(inputStream);
         } finally {
             if (inputStream != null)
                 inputStream.close();

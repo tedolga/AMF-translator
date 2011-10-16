@@ -8,9 +8,7 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 /**
@@ -28,19 +26,20 @@ public class AMFClient {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         AMFClient client = new AMFClient("localhost:8400/registration");
         MessageDecoder messageDecoder = new MessageDecoder();
-        File file = new File("C:/projects/AMF-translator/src/test/resources/Ping.binary");
-        HttpResponse response = client.sendMessage(file);
-        System.out.println(response.getStatusLine());
-        File responseFile = new File("Response.binary");
-        FileOutputStream fileOutputStream = null;
-        System.out.println(messageDecoder.getTrace(response.getEntity().getContent()));
-        try {
-            fileOutputStream = new FileOutputStream(responseFile);
-            response.getEntity().writeTo(fileOutputStream);
-        } finally {
-            if (fileOutputStream != null)
-                fileOutputStream.close();
-        }
+//        File file = new File("C:/projects/AMF-translator/src/test/resources/Ping.binary");
+////        CommandMessage actionMessage=messageDecoder.makePingMessage();
+////        HttpResponse response = client.sendMessage(file);
+//        System.out.println(response.getStatusLine());
+//        File responseFile = new File("Response.binary");
+//        FileOutputStream fileOutputStream = null;
+//        System.out.println(messageDecoder.getTrace(response.getEntity().getContent()));
+//        try {
+//            fileOutputStream = new FileOutputStream(responseFile);
+//            response.getEntity().writeTo(fileOutputStream);
+//        } finally {
+//            if (fileOutputStream != null)
+//                fileOutputStream.close();
+//        }
     }
 
     public AMFClient(String host) {
@@ -51,23 +50,14 @@ public class AMFClient {
         httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
     }
 
-    public HttpResponse sendMessage(File file) throws IOException {
+    public HttpResponse sendMessage(byte[] message) throws IOException {
         cookieStore.clear();
         HttpPost post = new HttpPost("http://" + hostURL + "/messagebroker/amf");
-        FileInputStream fileInputStream = null;
-        InputStreamEntity entity;
-        HttpResponse response;
-        try {
-            fileInputStream = new FileInputStream(file);
-            entity = new InputStreamEntity(fileInputStream, file.length());
-            entity.setContentType("application/x-amf");
-            post.setEntity(entity);
-            response = httpClient.execute(post, httpContext);
-        } finally {
-            if (fileInputStream != null)
-                fileInputStream.close();
-        }
-        return response;
+        ByteArrayInputStream stream = new ByteArrayInputStream(message);
+        InputStreamEntity entity = new InputStreamEntity(stream, message.length);
+        entity.setContentType("application/x-amf");
+        post.setEntity(entity);
+        return httpClient.execute(post, httpContext);
     }
 
 

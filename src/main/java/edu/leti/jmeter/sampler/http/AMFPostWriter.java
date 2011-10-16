@@ -1,4 +1,4 @@
-package edu.leti.jmeter.sampler;
+package edu.leti.jmeter.sampler.http;
 
 import org.apache.jmeter.protocol.http.sampler.HTTPSampler;
 import org.apache.jmeter.protocol.http.sampler.PostWriter;
@@ -22,17 +22,17 @@ public class AMFPostWriter extends PostWriter {
         // Buffer to hold the post body, except file content
         StringBuilder postedBody = new StringBuilder(1000);
 
-        AMFSender amfSender = (AMFSender) sampler;
-        HTTPFileArg files[] = amfSender.getHTTPFiles();
+        AMFHTTPSampler AMFHTTPSampler = (AMFHTTPSampler) sampler;
+        HTTPFileArg files[] = AMFHTTPSampler.getHTTPFiles();
 
-        String contentEncoding = amfSender.getContentEncoding();
+        String contentEncoding = AMFHTTPSampler.getContentEncoding();
         if (contentEncoding == null || contentEncoding.length() == 0) {
             contentEncoding = ENCODING;
         }
 
         // Check if we should do a multipart/form-data or an
         // application/x-www-form-urlencoded post request
-        if (amfSender.getUseMultipartForPost()) {
+        if (AMFHTTPSampler.getUseMultipartForPost()) {
             OutputStream out = connection.getOutputStream();
 
             // Write the form data post body, which we have constructed
@@ -71,13 +71,13 @@ public class AMFPostWriter extends PostWriter {
 
             out.flush();
             out.close();
-        } else if (amfSender.getAmfMessage() != null) {
+        } else if (AMFHTTPSampler.getAmfMessage() != null) {
             OutputStream out = connection.getOutputStream();
-            out.write(amfSender.getAmfMessage().getBytes());
+            out.write(AMFHTTPSampler.getAmfMessage().getBytes());
             out.flush();
             out.close();
 
-            postedBody.append(amfSender.getAmfMessage());
+            postedBody.append(AMFHTTPSampler.getAmfMessage());
         } else {
             OutputStream out = connection.getOutputStream();
             out.write("No message!".getBytes());
