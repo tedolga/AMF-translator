@@ -18,6 +18,7 @@ public class AmfRPCSamplerGui extends AbstractSamplerGui {
     private JLabeledTextField endpointUrlField;
     private JLabeledTextField amfCallField;
     private JLabeledTextField requestParametersField;
+    private ParametersPanel parametersPanel;
 
     public AmfRPCSamplerGui() {
         super();
@@ -33,6 +34,7 @@ public class AmfRPCSamplerGui extends AbstractSamplerGui {
         endpointUrlField = new JLabeledTextField("Endpoint URL");
         amfCallField = new JLabeledTextField("AMF Call");
         requestParametersField = new JLabeledTextField("Request parameters");
+        parametersPanel = new ParametersPanel();
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel amfRequestPanel = new JPanel();
@@ -49,10 +51,15 @@ public class AmfRPCSamplerGui extends AbstractSamplerGui {
         c.gridy = 2;
         amfRequestPanel.add(amfCallField, c);
 
-        c.gridy = 4;
-        amfRequestPanel.add(requestParametersField, c);
+//        c.gridy = 4;
+//        amfRequestPanel.add(requestParametersField, c);
 
-        amfRequestPanel.setBorder(BorderFactory.createTitledBorder("AMF Request"));
+        c.gridy = 4;
+        c.weightx = 6;
+        c.gridheight = 4;
+        amfRequestPanel.add(parametersPanel, c);
+
+        amfRequestPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "AMF Request"));
 
         mainPanel.add(amfRequestPanel, BorderLayout.NORTH);
 
