@@ -65,13 +65,17 @@
         <dependency>
             <groupId>com.adobe.blazeds</groupId>
             <artifactId>blazeds-core</artifactId>
-            <version>3.2.0.3978</version>
+            <version>4.0.0.14931</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/flex-messaging-core.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>com.adobe.blazeds</groupId>
             <artifactId>blazeds-common</artifactId>
-            <version>3.2.0.3978</version>
+            <version>4.0.0.14931</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/flex-messaging-common.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -113,7 +117,7 @@
                                 <artifactItem>
                                     <groupId>com.adobe.blazeds</groupId>
                                     <artifactId>blazeds-core</artifactId>
-                                    <version>3.2.0.3978</version>
+                                    <version>4.0.0.14931</version>
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
@@ -122,7 +126,7 @@
                                 <artifactItem>
                                     <groupId>com.adobe.blazeds</groupId>
                                     <artifactId>blazeds-common</artifactId>
-                                    <version>3.2.0.3978</version>
+                                    <version>4.0.0.14931</version>
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
