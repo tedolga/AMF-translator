@@ -19,6 +19,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Реализация сэмплера, отправляющего AMF запросы.
+ * Нагрузочное(многопоточное) тестирование в JMeter организовано так, что каждый поток прогоняет тест план,
+ * имитируя работу отдельного пользователя. Данная реализация сэмплера обеспечивает создание отдельного соединения
+ * с сервером для каждого пользователя (потока) и непрерывность сессии во время прохождения тест плана.
+ *
  * @author Tedikova O.
  * @version 1.0
  */
@@ -32,6 +37,11 @@ public class AmfRPCSampler extends AbstractSampler {
 
     private static final String PARAMETERS = "request_parameters";
 
+    private static final String PARAMS_TABLE = "parameters_table";
+
+    /**
+     * Переменная, содержащая свой экземпляр AMFConnection для каждого потока из ThreadGroup
+     */
     private static final ThreadLocal<AMFConnection> AMF_CONNECTION_THREAD_LOCAL = new ThreadLocal<AMFConnection>();
 
     public String getEndpointUrl() {
@@ -59,6 +69,15 @@ public class AmfRPCSampler extends AbstractSampler {
         setProperty(property);
     }
 
+    public void setParamsTable(List<String[]> paramsTable) {
+        List<JMeterProperty> propertyList = new ArrayList<JMeterProperty>();
+        for (String[] row : paramsTable) {
+            propertyList.add(new StringProperty(row[0], row[1]));
+        }
+        CollectionProperty property = new CollectionProperty(PARAMS_TABLE, propertyList);
+        setProperty(property);
+    }
+
     public List<String> getParameters() {
         List<String> result = new ArrayList<String>();
         JMeterProperty property = getProperty(PARAMETERS);
@@ -73,12 +92,29 @@ public class AmfRPCSampler extends AbstractSampler {
         }
     }
 
+    public List<String[]> getParamsTable() {
+        List<String[]> result = new ArrayList<String[]>();
+        JMeterProperty property = getProperty(PARAMS_TABLE);
+        if (property instanceof CollectionProperty) {
+            CollectionProperty collectionProperty = (CollectionProperty) property;
+            for (int i = 0; i < collectionProperty.size(); i++) {
+                result.add(new String[]{collectionProperty.get(i).getName(), collectionProperty.get(i).getStringValue()});
+            }
+            return result;
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public SampleResult sample(Entry entry) {
         AmfRPCSamplerResult sampleResult = new AmfRPCSamplerResult(this);
         sampleResult.setSampleLabel(getName());
 
         sampleResult.setSuccessful(true);
-
+        /*
+        Проверка того, существует ли для данного потока AMFConnection. Если для данного потока AMFConnection не
+        существует, то создаётся новый экземпляр AMFConnection.
+         */
         AMFConnection amfConnection = AMF_CONNECTION_THREAD_LOCAL.get();
         if (amfConnection == null) {
             try {

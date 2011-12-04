@@ -6,7 +6,8 @@ import org.apache.jorphan.gui.JLabeledTextField;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Графический интерфейс AMF sampler
@@ -17,7 +18,6 @@ import java.util.Arrays;
 public class AmfRPCSamplerGui extends AbstractSamplerGui {
     private JLabeledTextField endpointUrlField;
     private JLabeledTextField amfCallField;
-    private JLabeledTextField requestParametersField;
     private ParametersPanel parametersPanel;
 
     public AmfRPCSamplerGui() {
@@ -33,7 +33,6 @@ public class AmfRPCSamplerGui extends AbstractSamplerGui {
 
         endpointUrlField = new JLabeledTextField("Endpoint URL");
         amfCallField = new JLabeledTextField("AMF Call");
-        requestParametersField = new JLabeledTextField("Request parameters");
         parametersPanel = new ParametersPanel();
 
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -50,9 +49,6 @@ public class AmfRPCSamplerGui extends AbstractSamplerGui {
 
         c.gridy = 2;
         amfRequestPanel.add(amfCallField, c);
-
-//        c.gridy = 4;
-//        amfRequestPanel.add(requestParametersField, c);
 
         c.gridy = 4;
         c.weightx = 6;
@@ -75,13 +71,18 @@ public class AmfRPCSamplerGui extends AbstractSamplerGui {
         return getClass().getCanonicalName();
     }
 
+    /**
+     * Метод, вызываемый при перерисовке GUI тестового элемнта. Отображает в GUI параметры, содержащиеся в сэмплере
+     *
+     * @param element тестовый элемент (экземпляр сэмплера)
+     */
     @Override
     public void configure(TestElement element) {
         super.configure(element);
         AmfRPCSampler amfSender = (AmfRPCSampler) element;
         endpointUrlField.setText(amfSender.getEndpointUrl());
         amfCallField.setText(amfSender.getAmfCall());
-        requestParametersField.setText(getParametersString(amfSender.getParameters()));
+        parametersPanel.setTableData(amfSender.getParamsTable());
     }
 
     public TestElement createTestElement() {
@@ -90,12 +91,18 @@ public class AmfRPCSamplerGui extends AbstractSamplerGui {
         return amfSender;
     }
 
+    /**
+     * Метод передаёт в тестовый элемент из GUI необходимые параметры.
+     *
+     * @param testElement тестовый элемент
+     */
     public void modifyTestElement(TestElement testElement) {
         AmfRPCSampler amfSender = (AmfRPCSampler) testElement;
         super.configureTestElement(amfSender);
         amfSender.setEndpointUrl(endpointUrlField.getText());
         amfSender.setAmfCall(amfCallField.getText());
-        amfSender.setParameters(Arrays.asList(requestParametersField.getText().split(";")));
+        amfSender.setParameters(getParametersList(parametersPanel.getTableData()));
+        amfSender.setParamsTable(parametersPanel.getTableData());
     }
 
     @Override
@@ -103,16 +110,15 @@ public class AmfRPCSamplerGui extends AbstractSamplerGui {
         super.clearGui();
         endpointUrlField.setText("");
         amfCallField.setText("");
-        requestParametersField.setText("");
+        parametersPanel.setTableData(new ArrayList<String[]>());
     }
 
-    private String getParametersString(java.util.List<String> parameters) {
-        StringBuilder parametersString = new StringBuilder();
-        for (String next : parameters) {
-            parametersString.append(next);
-            parametersString.append(";");
+    private java.util.List<String> getParametersList(List<String[]> params) {
+        List<String> result = new ArrayList<String>();
+        for (String[] row : params) {
+            result.add(row[1]);
         }
-        return parametersString.toString();
+        return result;
     }
 }
 

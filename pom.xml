@@ -6,14 +6,35 @@
     <packaging>jar</packaging>
 
     <properties>
-        <jmeter.home>C:/JMeter</jmeter.home>
+        <jmeter.home>C:/JMeter-2.5.1</jmeter.home>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>spring-maven-external</id>
+            <layout>default</layout>
+            <name>Springframework Maven External Repository</name>
+            <url>http://maven.springframework.org/external</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <layout>default</layout>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.7</version>
+            <version>4.8</version>
             <scope>test</scope>
         </dependency>
 
@@ -33,7 +54,7 @@
         <dependency>
             <groupId>org.apache.jmeter</groupId>
             <artifactId>jmeter-core</artifactId>
-            <version>2.3.4</version>
+            <version>2.5.1</version>
             <scope>system</scope>
             <systemPath>${jmeter.home}/lib/ext/ApacheJMeter_core.jar</systemPath>
         </dependency>
@@ -41,7 +62,7 @@
         <dependency>
             <groupId>org.apache.jmeter</groupId>
             <artifactId>jmeter-componenets</artifactId>
-            <version>2.3.4</version>
+            <version>2.5.1</version>
             <scope>system</scope>
             <systemPath>${jmeter.home}/lib/ext/ApacheJMeter_components.jar</systemPath>
         </dependency>
@@ -49,7 +70,7 @@
         <dependency>
             <groupId>org.apache.jmeter</groupId>
             <artifactId>jmeter-http</artifactId>
-            <version>2.3.4</version>
+            <version>2.5.1</version>
             <scope>system</scope>
             <systemPath>${jmeter.home}/lib/ext/ApacheJMeter_http.jar</systemPath>
         </dependency>
@@ -57,7 +78,7 @@
         <dependency>
             <groupId>org.apache.jmeter</groupId>
             <artifactId>jmeter-jorphan</artifactId>
-            <version>2.3.4</version>
+            <version>2.5.1</version>
             <scope>system</scope>
             <systemPath>${jmeter.home}/lib/jorphan.jar</systemPath>
         </dependency>
@@ -65,17 +86,13 @@
         <dependency>
             <groupId>com.adobe.blazeds</groupId>
             <artifactId>blazeds-core</artifactId>
-            <version>4.0.0.14931</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/flex-messaging-core.jar</systemPath>
+            <version>3.2.0.3978</version>
         </dependency>
 
         <dependency>
             <groupId>com.adobe.blazeds</groupId>
             <artifactId>blazeds-common</artifactId>
-            <version>4.0.0.14931</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/flex-messaging-common.jar</systemPath>
+            <version>3.2.0.3978</version>
         </dependency>
 
         <dependency>
@@ -117,7 +134,7 @@
                                 <artifactItem>
                                     <groupId>com.adobe.blazeds</groupId>
                                     <artifactId>blazeds-core</artifactId>
-                                    <version>4.0.0.14931</version>
+                                    <version>3.2.0.3978</version>
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
@@ -126,7 +143,7 @@
                                 <artifactItem>
                                     <groupId>com.adobe.blazeds</groupId>
                                     <artifactId>blazeds-common</artifactId>
-                                    <version>4.0.0.14931</version>
+                                    <version>3.2.0.3978</version>
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>

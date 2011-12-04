@@ -1,11 +1,12 @@
 package edu.leti.jmeter.sampler.binary;
 
 import javax.swing.*;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tedikova O.
@@ -13,8 +14,6 @@ import java.awt.event.ActionListener;
  */
 
 public class ParametersPanel extends JPanel {
-    private String[] columnNames;
-    private Object[][] rowData;
     private ParamsTableModel tableModel;
     private JTable paramsTable;
     private JButton addButton;
@@ -26,17 +25,15 @@ public class ParametersPanel extends JPanel {
 
     private void init() {
         setLayout(new BorderLayout(0, 4));
-        columnNames = new String[]{"name", "value"};
-        rowData = new Object[][]{};
-        paramsTable = new JTable(rowData, columnNames);
         tableModel = new ParamsTableModel();
-        paramsTable.setModel(tableModel);
+        paramsTable = new JTable(tableModel);
 
         JScrollPane scrollPane = new JScrollPane(paramsTable);
 
         addButton = new JButton("Add");
         addButton.addActionListener(new AddRowListener());
         deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new DeleteRowListener());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addButton, BorderLayout.CENTER);
@@ -47,6 +44,14 @@ public class ParametersPanel extends JPanel {
         setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Request Parameters"));
     }
 
+    public List<String[]> getTableData() {
+        return tableModel.getRows();
+    }
+
+    public void setTableData(List<String[]> rows) {
+        tableModel.setRows(rows);
+    }
+
     private class AddRowListener implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
@@ -55,14 +60,32 @@ public class ParametersPanel extends JPanel {
         }
     }
 
+    private class DeleteRowListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            tableModel.deleteRow();
+        }
+    }
+
     private class ParamsTableModel extends AbstractTableModel {
 
-        public void addRow() {
+        private String[] columnNames = new String[]{"name", "value"};
+        private java.util.List<String[]> rows = new ArrayList<String[]>();
 
+        public void addRow() {
+            rows.add(new String[]{"", ""});
+            int firstRow = rows.size() - 1;
+            fireTableRowsInserted(0, firstRow);
+        }
+
+        public void deleteRow() {
+            int selectedRow = ParametersPanel.this.paramsTable.getSelectedRow();
+            rows.remove(selectedRow);
+            fireTableRowsDeleted(selectedRow, selectedRow);
         }
 
         public int getRowCount() {
-            return rowData.length;
+            return rows.size();
         }
 
         public int getColumnCount() {
@@ -83,21 +106,20 @@ public class ParametersPanel extends JPanel {
 
 
         public Object getValueAt(int rowIndex, int columnIndex) {
-            return rowData[rowIndex][columnIndex];
+            return rows.get(rowIndex)[columnIndex];
         }
 
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            rowData[rowIndex][columnIndex] = aValue;
+            rows.get(rowIndex)[columnIndex] = (String) aValue;
             fireTableCellUpdated(rowIndex, columnIndex);
         }
 
-
-        public void addTableModelListener(TableModelListener l) {
-
+        public List<String[]> getRows() {
+            return rows;
         }
 
-        public void removeTableModelListener(TableModelListener l) {
-
+        public void setRows(List<String[]> rows) {
+            this.rows = rows;
         }
     }
 }
