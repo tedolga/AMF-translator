@@ -112,9 +112,9 @@ public class AmfRPCSampler extends AbstractSampler {
 
         sampleResult.setSuccessful(true);
         /*
-        Проверка того, существует ли для данного потока AMFConnection. Если для данного потока AMFConnection не
-        существует, то создаётся новый экземпляр AMFConnection.
-         */
+        * Проверка того, существует ли для данного потока AMFConnection. Если для данного потока AMFConnection не
+        * существует, то создаётся новый экземпляр AMFConnection.
+        */
         AMFConnection amfConnection = AMF_CONNECTION_THREAD_LOCAL.get();
         if (amfConnection == null) {
             try {
