@@ -1,4 +1,4 @@
-package edu.leti.jmeter.sampler.binary;
+package edu.leti.jmeter.sampler;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;

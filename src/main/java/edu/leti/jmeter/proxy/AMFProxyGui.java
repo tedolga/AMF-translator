@@ -1,4 +1,4 @@
-package edu.leti.jmeter.sampler.proxy.binary;
+package edu.leti.jmeter.proxy;
 
 import org.apache.jmeter.control.gui.LogicControllerGui;
 import org.apache.jmeter.gui.UnsharedComponent;
@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -25,6 +26,8 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
     private JButton startButton;
     private JButton stopButton;
     private AMFProxyControl amfProxyControl;
+    private JLabel proxyTypeLabel;
+    private JComboBox proxyType;
 
     public AMFProxyGui() {
         super();
@@ -37,7 +40,7 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
         add(makeTitlePanel(), BorderLayout.NORTH);
 
         proxyPort = new JLabeledTextField("AmfProxy Port:  ");
-        serverHost = new JLabeledTextField("Server Host:");
+        serverHost = new JLabeledTextField("Server Host:    ");
         serverPort = new JLabeledTextField(" Sever Port:");
 
         startButton = new JButton("Start");
@@ -45,9 +48,19 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
         stopButton = new JButton("Stop");
         stopButton.addActionListener(new StopListener());
 
+        proxyType = new JComboBox();
+        AMFProxyControl.ProxyTypes[] values = AMFProxyControl.ProxyTypes.values();
+        DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(values);
+        proxyType.setModel(comboBoxModel);
+
+        proxyTypeLabel = new JLabel("Proxy Type:     ");
+
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel proxyPanel = new JPanel();
         JPanel buttonPanel = new JPanel();
+        Box horizontalBox = Box.createHorizontalBox();
+        horizontalBox.add(proxyTypeLabel);
+        horizontalBox.add(proxyType);
 
         proxyPanel.setLayout(new GridBagLayout());
 
@@ -60,12 +73,15 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
         c.weightx = 1;
         proxyPanel.add(proxyPort, c);
 
-        c.gridwidth = 1;
         c.gridy = 2;
         proxyPanel.add(serverHost, c);
 
         c.gridx = 1;
         proxyPanel.add(serverPort, c);
+
+        c.gridy = 3;
+        c.gridx = 0;
+        proxyPanel.add(horizontalBox, c);
 
         proxyPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Settings"));
 
@@ -100,6 +116,7 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
         proxyPort.setText(amfProxyControl.getProxyPort());
         serverHost.setText(amfProxyControl.getServerHost());
         serverPort.setText(amfProxyControl.getServerPort());
+        proxyType.setSelectedItem(amfProxyControl.getProxyType());
     }
 
     public TestElement createTestElement() {
@@ -119,6 +136,7 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
         amfProxyControl.setProxyPort(proxyPort.getText());
         amfProxyControl.setServerHost(serverHost.getText());
         amfProxyControl.setServerPort(serverPort.getText());
+        amfProxyControl.setProxyType(proxyType.getSelectedItem().toString());
     }
 
     @Override
@@ -150,7 +168,11 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
 
     private void startProxy() {
         modifyTestElement(amfProxyControl);
-        amfProxyControl.startProxy();
+        try {
+            amfProxyControl.startProxy();
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     private void stopProxy() {

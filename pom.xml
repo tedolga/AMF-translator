@@ -39,12 +39,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jboss.netty</groupId>
-            <artifactId>netty</artifactId>
-            <version>3.2.6.Final</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.1.1</version>
@@ -154,15 +148,6 @@
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
                                     <destFileName>blazeds-common.jar</destFileName>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.jboss.netty</groupId>
-                                    <artifactId>netty</artifactId>
-                                    <version>3.2.6.Final</version>
-                                    <type>jar</type>
-                                    <overWrite>false</overWrite>
-                                    <outputDirectory>${jmeter.home}/lib/ext</outputDirectory>
-                                    <destFileName>netty.jar</destFileName>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>ch.qos.logback</groupId>

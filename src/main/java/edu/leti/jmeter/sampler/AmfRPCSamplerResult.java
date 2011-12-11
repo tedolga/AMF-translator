@@ -1,4 +1,4 @@
-package edu.leti.jmeter.sampler.binary;
+package edu.leti.jmeter.sampler;
 
 import org.apache.jmeter.samplers.SampleResult;
 

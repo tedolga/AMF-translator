@@ -1,4 +1,4 @@
-package edu.leti.jmeter.sampler.binary;
+package edu.leti.jmeter.sampler;
 
 import flex.messaging.io.amf.client.AMFConnection;
 import flex.messaging.io.amf.client.exceptions.ClientStatusException;
