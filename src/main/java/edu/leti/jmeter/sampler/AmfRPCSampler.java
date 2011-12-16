@@ -39,6 +39,10 @@ public class AmfRPCSampler extends AbstractSampler {
 
     private static final String PARAMS_TABLE = "parameters_table";
 
+    {
+        setProperty(AmfRPCSampler.GUI_CLASS, AmfRPCSamplerGui.class.getCanonicalName());
+    }
+
     /**
      * Переменная, содержащая свой экземпляр AMFConnection для каждого потока из ThreadGroup
      */

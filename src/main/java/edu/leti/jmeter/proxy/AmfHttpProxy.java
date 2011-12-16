@@ -1,15 +1,21 @@
 package edu.leti.jmeter.proxy;
 
 import edu.leti.amf.MessageDecoder;
+import edu.leti.jmeter.sampler.AmfRPCSampler;
 import flex.messaging.io.amf.ActionMessage;
 import flex.messaging.io.amf.MessageBody;
 import flex.messaging.messages.RemotingMessage;
+import org.apache.jmeter.exceptions.IllegalUserActionException;
+import org.apache.jmeter.gui.GuiPackage;
+import org.apache.jmeter.gui.tree.JMeterTreeModel;
+import org.apache.jmeter.gui.tree.JMeterTreeNode;
 import org.apache.jmeter.protocol.http.proxy.Proxy;
 import org.apache.jmeter.protocol.http.proxy.ProxyControl;
 import org.apache.jmeter.protocol.http.sampler.HTTPSamplerBase;
 import org.apache.jmeter.protocol.http.util.HTTPFileArg;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.TestElement;
+import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.util.JOrphanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +24,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Tedikova O.
@@ -39,7 +42,7 @@ public class AmfHttpProxy extends AbstractProxy {
 
     }
 
-    @Override
+
     public void start() throws IOException {
         running = true;
         Thread daemon = new Thread() {
@@ -83,16 +86,13 @@ public class AmfHttpProxy extends AbstractProxy {
                                      */
                                     @Override
                                     public void deliverSampler(HTTPSamplerBase sampler, TestElement[] subConfigs, SampleResult result) {
-                                        System.out.println(sampler.getPath());
                                         MessageDecoder decoder = new MessageDecoder();
                                         HTTPFileArg[] httpFiles = sampler.getHTTPFiles();
                                         for (HTTPFileArg httpFile : httpFiles) {
-                                            System.out.println(httpFile.getPath());
                                             InputStream inputStream = null;
                                             try {
                                                 try {
                                                     inputStream = new FileInputStream(new File(httpFile.getPath()));
-                                                    //System.out.println(decoder.getTrace(inputStream));
                                                     ActionMessage actionMessage = decoder.getActionMessage(inputStream);
                                                     MessageBody messageBody = actionMessage.getBody(0);
                                                     Object[] data = (Object[]) messageBody.getData();
@@ -101,6 +101,23 @@ public class AmfHttpProxy extends AbstractProxy {
                                                         String operation = remotingMessage.getOperation();
                                                         String destination = remotingMessage.getDestination();
                                                         List parameters = remotingMessage.getParameters();
+                                                        List<String> stringParameters = new ArrayList<String>();
+                                                        for (Object parameter : parameters) {
+                                                            stringParameters.add(parameter.toString());
+                                                        }
+                                                        AmfRPCSampler amfRPCSampler = new AmfRPCSampler();
+                                                        amfRPCSampler.setAmfCall(destination + "." + operation);
+                                                        amfRPCSampler.setEndpointUrl(sampler.getUrl().toString());
+                                                        amfRPCSampler.setParameters(stringParameters);
+                                                        System.out.println();
+                                                        JMeterTreeNode myTarget = findFirstNodeOfType(AMFProxyControl.class);
+                                                        try {
+                                                            JMeterTreeModel treeModel = GuiPackage.getInstance().getTreeModel();
+                                                            treeModel.addComponent(amfRPCSampler, myTarget);
+                                                            System.out.println();
+                                                        } catch (IllegalUserActionException e) {
+                                                            JMeterUtils.reportErrorToUser(e.getMessage());
+                                                        }
                                                     }
                                                 } catch (Exception e) {
                                                     logger.error("Can't open file " + httpFile.getPath(), e);
@@ -141,8 +158,23 @@ public class AmfHttpProxy extends AbstractProxy {
 
     }
 
-    @Override
+
     public void stop() {
         running = false;
     }
+
+    private JMeterTreeNode findFirstNodeOfType(Class<?> type) {
+        JMeterTreeModel treeModel = GuiPackage.getInstance().getTreeModel();
+        List<JMeterTreeNode> nodes = treeModel.getNodesOfType(type);
+        Iterator<JMeterTreeNode> iter = nodes.iterator();
+        while (iter.hasNext()) {
+            JMeterTreeNode node = iter.next();
+            if (node.isEnabled()) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+
 }

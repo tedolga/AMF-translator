@@ -21,7 +21,7 @@ public class AMFProxyControl extends GenericController implements SamplerDeliver
     private static final String SERVER_PORT = "amf_server_port";
     private static final String PROXY_TYPE = "amf_proxy_type";
 
-    @Override
+
     public void deliverSampler(HTTPSamplerBase sampler, TestElement[] subConfigs, SampleResult result) {
 
     }
