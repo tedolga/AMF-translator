@@ -91,37 +91,34 @@ public class AmfHttpProxy extends AbstractProxy {
                                         for (HTTPFileArg httpFile : httpFiles) {
                                             InputStream inputStream = null;
                                             try {
-                                                try {
-                                                    inputStream = new FileInputStream(new File(httpFile.getPath()));
-                                                    ActionMessage actionMessage = decoder.getActionMessage(inputStream);
-                                                    MessageBody messageBody = actionMessage.getBody(0);
-                                                    Object[] data = (Object[]) messageBody.getData();
-                                                    if (data[0] instanceof RemotingMessage) {
-                                                        RemotingMessage remotingMessage = (RemotingMessage) data[0];
-                                                        String operation = remotingMessage.getOperation();
-                                                        String destination = remotingMessage.getDestination();
-                                                        List parameters = remotingMessage.getParameters();
-                                                        List<String> stringParameters = new ArrayList<String>();
-                                                        for (Object parameter : parameters) {
-                                                            stringParameters.add(parameter.toString());
-                                                        }
-                                                        AmfRPCSampler amfRPCSampler = new AmfRPCSampler();
-                                                        amfRPCSampler.setAmfCall(destination + "." + operation);
-                                                        amfRPCSampler.setEndpointUrl(sampler.getUrl().toString());
-                                                        amfRPCSampler.setParameters(stringParameters);
-                                                        System.out.println();
-                                                        JMeterTreeNode myTarget = findFirstNodeOfType(AMFProxyControl.class);
-                                                        try {
-                                                            JMeterTreeModel treeModel = GuiPackage.getInstance().getTreeModel();
-                                                            treeModel.addComponent(amfRPCSampler, myTarget);
-                                                            System.out.println();
-                                                        } catch (IllegalUserActionException e) {
-                                                            JMeterUtils.reportErrorToUser(e.getMessage());
-                                                        }
+                                                inputStream = new FileInputStream(new File(httpFile.getPath()));
+                                                ActionMessage actionMessage = decoder.getActionMessage(inputStream);
+                                                MessageBody messageBody = actionMessage.getBody(0);
+                                                Object[] data = (Object[]) messageBody.getData();
+                                                if (data[0] instanceof RemotingMessage) {
+                                                    RemotingMessage remotingMessage = (RemotingMessage) data[0];
+                                                    String operation = remotingMessage.getOperation();
+                                                    String destination = remotingMessage.getDestination();
+                                                    List parameters = remotingMessage.getParameters();
+                                                    List<String[]> stringParameters = new ArrayList<String[]>();
+                                                    for (Object parameter : parameters) {
+                                                        stringParameters.add(new String[]{"", parameter.toString()});
                                                     }
-                                                } catch (Exception e) {
-                                                    logger.error("Can't open file " + httpFile.getPath(), e);
+                                                    AmfRPCSampler amfRPCSampler = new AmfRPCSampler();
+                                                    amfRPCSampler.setAmfCall(destination + "." + operation);
+                                                    amfRPCSampler.setEndpointUrl(sampler.getUrl().toString());
+                                                    amfRPCSampler.setParamsTable(stringParameters);
+                                                    amfRPCSampler.setName(sampler.getUrl().toString());
+                                                    JMeterTreeNode myTarget = findFirstNodeOfType(AMFProxyControl.class);
+                                                    try {
+                                                        JMeterTreeModel treeModel = GuiPackage.getInstance().getTreeModel();
+                                                        treeModel.addComponent(amfRPCSampler, myTarget);
+                                                    } catch (IllegalUserActionException e) {
+                                                        JMeterUtils.reportErrorToUser(e.getMessage());
+                                                    }
                                                 }
+                                            } catch (Exception e) {
+                                                logger.error("Can't open file " + httpFile.getPath(), e);
                                             } finally {
                                                 if (inputStream != null) {
                                                     try {

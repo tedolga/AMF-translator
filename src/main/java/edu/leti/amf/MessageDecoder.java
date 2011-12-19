@@ -2,15 +2,18 @@ package edu.leti.amf;
 
 import flex.messaging.io.ClassAliasRegistry;
 import flex.messaging.io.SerializationContext;
-import flex.messaging.io.amf.*;
+import flex.messaging.io.amf.ActionContext;
+import flex.messaging.io.amf.ActionMessage;
+import flex.messaging.io.amf.AmfMessageDeserializer;
+import flex.messaging.io.amf.AmfTrace;
 import flex.messaging.messages.AcknowledgeMessageExt;
 import flex.messaging.messages.AsyncMessageExt;
-import flex.messaging.messages.CommandMessage;
 import flex.messaging.messages.CommandMessageExt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Класс для сериализации и десериализации amf сообщений
@@ -19,7 +22,7 @@ import java.io.OutputStream;
  * @version 1.0
  */
 public class MessageDecoder {
-
+    private static final Logger logger = LoggerFactory.getLogger(MessageDecoder.class);
 
     public MessageDecoder() {
         ClassAliasRegistry registry = ClassAliasRegistry.getRegistry();
@@ -46,50 +49,8 @@ public class MessageDecoder {
         SerializationContext serializationContext = SerializationContext.getSerializationContext();
         deserializer.initialize(serializationContext, inputStream, amfTrace);
         deserializer.readMessage(message, context);
+        logger.debug("Received message\n" + amfTrace);
         return message;
-    }
-
-    /**
-     * Метод преобразует amf сообщение в читаемый вид
-     *
-     * @param inputStream поток бинарных данных
-     * @return строка сообщения
-     * @throws IOException            в случае ошибки чтения/записи
-     * @throws ClassNotFoundException в случае ошибки работы с классами
-     */
-    public String getTrace(InputStream inputStream) throws IOException, ClassNotFoundException {
-        AmfMessageDeserializer deserializer = new AmfMessageDeserializer();
-        ActionMessage message = new ActionMessage();
-        ActionContext context = new ActionContext();
-        AmfTrace amfTrace = new AmfTrace();
-        SerializationContext serializationContext = SerializationContext.getSerializationContext();
-        deserializer.initialize(serializationContext, inputStream, amfTrace);
-        deserializer.readMessage(message, context);
-        return amfTrace.toString();
-    }
-
-    /**
-     * Метод преобразует сообщение в поток бинарных данных
-     *
-     * @param message
-     * @param outputStream
-     * @return
-     * @throws IOException
-     */
-    public OutputStream serializeMessage(ActionMessage message, OutputStream outputStream) throws IOException {
-        AmfMessageSerializer serializer = new AmfMessageSerializer();
-        AmfTrace amfTrace = new AmfTrace();
-        SerializationContext serializationContext = SerializationContext.getSerializationContext();
-        serializer.initialize(serializationContext, outputStream, amfTrace);
-        serializer.writeMessage(message);
-        return outputStream;
-    }
-
-    public ActionMessage makePingMessage() {
-        ActionMessage actionMessage = new ActionMessage();
-        CommandMessage commandMessage = new CommandMessage(5);
-        actionMessage.getBody(1).setData(commandMessage);
-        return actionMessage;
     }
 
 }

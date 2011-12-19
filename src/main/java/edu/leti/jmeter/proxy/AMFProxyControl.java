@@ -19,27 +19,8 @@ public class AMFProxyControl extends GenericController implements SamplerDeliver
     private static final String PROXY_PORT = "amf_proxy_port";
     private static final String SERVER_HOST = "amf_server_host";
     private static final String SERVER_PORT = "amf_server_port";
-    private static final String PROXY_TYPE = "amf_proxy_type";
-
 
     public void deliverSampler(HTTPSamplerBase sampler, TestElement[] subConfigs, SampleResult result) {
-
-    }
-
-    public enum ProxyTypes {
-        BINARY_PROXY_TYPE("Binary Proxy"),
-        HTTP_PROXY_TYPE("HTTP Proxy");
-
-        private final String type;
-
-        ProxyTypes(String type) {
-            this.type = type;
-        }
-
-        @Override
-        public String toString() {
-            return type;
-        }
 
     }
 
@@ -69,18 +50,15 @@ public class AMFProxyControl extends GenericController implements SamplerDeliver
         setProperty(SERVER_PORT, serverPort);
     }
 
-    public String getProxyType() {
-        return getPropertyAsString(PROXY_TYPE);
-    }
-
-    public void setProxyType(String proxyType) {
-        setProperty(PROXY_TYPE, proxyType);
-    }
-
     public synchronized void startProxy() throws IOException {
         if (amfProxy == null) {
-            amfProxy = new AmfHttpProxy(Integer.valueOf(getProxyPort()), getServerHost(),
-                    Integer.valueOf(getServerPort()));
+            try {
+                amfProxy = new AmfHttpProxy(Integer.parseInt(getProxyPort()), getServerHost(),
+                        Integer.parseInt(getServerPort()));
+            } catch (NumberFormatException ex) {
+                logger.error("Couldn't create proxy server with proxy port= " + getProxyPort() +
+                        "; server host=" + getServerHost() + " and server port=" + getServerPort());
+            }
         } else {
             amfProxy.stop();
         }
