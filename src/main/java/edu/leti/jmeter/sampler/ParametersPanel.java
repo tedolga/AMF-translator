@@ -12,12 +12,10 @@ import java.util.List;
  * @author Tedikova O.
  * @version 1.0
  */
-
 public class ParametersPanel extends JPanel {
+
     private ParamsTableModel tableModel;
     private JTable paramsTable;
-    private JButton addButton;
-    private JButton deleteButton;
 
     public ParametersPanel() {
         init();
@@ -30,9 +28,9 @@ public class ParametersPanel extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(paramsTable);
 
-        addButton = new JButton("Add");
+        JButton addButton = new JButton("Add");
         addButton.addActionListener(new AddRowListener());
-        deleteButton = new JButton("Delete");
+        JButton deleteButton = new JButton("Delete");
         deleteButton.addActionListener(new DeleteRowListener());
 
         JPanel buttonPanel = new JPanel();
@@ -56,7 +54,6 @@ public class ParametersPanel extends JPanel {
 
         public void actionPerformed(ActionEvent e) {
             tableModel.addRow();
-
         }
     }
 

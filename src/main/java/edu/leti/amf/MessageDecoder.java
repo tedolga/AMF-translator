@@ -22,6 +22,7 @@ import java.io.InputStream;
  * @version 1.0
  */
 public class MessageDecoder {
+
     private static final Logger logger = LoggerFactory.getLogger(MessageDecoder.class);
 
     public MessageDecoder() {
@@ -41,7 +42,6 @@ public class MessageDecoder {
      * @throws ClassNotFoundException в случае ошибки работы с классами
      */
     public ActionMessage getActionMessage(InputStream inputStream) throws IOException, ClassNotFoundException {
-
         AmfMessageDeserializer deserializer = new AmfMessageDeserializer();
         ActionMessage message = new ActionMessage();
         ActionContext context = new ActionContext();
@@ -52,5 +52,4 @@ public class MessageDecoder {
         logger.debug("Received message\n" + amfTrace);
         return message;
     }
-
 }

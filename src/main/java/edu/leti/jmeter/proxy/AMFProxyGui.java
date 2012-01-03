@@ -10,10 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-
 
 /**
  * @author Tedikova O.
@@ -75,8 +73,6 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
         mainPanel.add(proxyPanel, BorderLayout.NORTH);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         add(mainPanel, BorderLayout.CENTER);
-
-
     }
 
     @Override
@@ -149,14 +145,16 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
     }
 
     private void startProxy() {
-        modifyTestElement(amfProxyControl);
-        try {
-            amfProxyControl.startProxy();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         startButton.setEnabled(false);
-
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                modifyTestElement(amfProxyControl);
+                amfProxyControl.startProxy();
+                return null;
+            }
+        };
+        worker.execute();
     }
 
     private void stopProxy() {
