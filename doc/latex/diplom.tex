@@ -1,7 +1,7 @@
 \documentclass[a4paper,14pt]{extreport} %размер бумаги устанавливаем А4, шрифт 12пунктов
 \renewcommand{\rmdefault}{ftm}
 \renewcommand{\baselinestretch}{1.5}
-\usepackage[T2A]{fontenc}
+\newcommand{\mychapter}[1]{\chapter*{#1} \addcontentsline{toc}{chapter}{#1} \refstepcounter{chapter}}\usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}%включаем кодировку utf8
 \usepackage[english,russian]{babel}%используем русский и английский языки с переносами
 \usepackage{amssymb,amsfonts,amsmath,mathtext,cite,enumerate,float} %подключаем нужные пакеты расширений
@@ -28,4 +28,5 @@
 \tableofcontents % это оглавление, которое генерируется автоматически
 \input{intro}% это введение
 \input{comparison}
+\input{development}
 \end{document}
