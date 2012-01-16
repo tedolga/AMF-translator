@@ -133,8 +133,7 @@ public class AMFProxyControl extends GenericController implements SamplerDeliver
     public synchronized void startProxy() {
         if (amfProxy == null) {
             try {
-                amfProxy = new AmfHttpProxy(Integer.parseInt(getProxyPort()), getServerHost(),
-                        Integer.parseInt(getServerPort()), this);
+                amfProxy = new AmfHttpProxy(Integer.parseInt(getProxyPort()), "", 0, this);
             } catch (NumberFormatException ex) {
                 JMeterUtils.reportErrorToUser("Couldn't create proxy server with proxy port= " + getProxyPort() +
                         "; server host=" + getServerHost() + " and server port=" + getServerPort());

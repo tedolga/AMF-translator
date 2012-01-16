@@ -19,8 +19,6 @@ import java.util.Collection;
  */
 public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent {
     private JLabeledTextField proxyPort;
-    private JLabeledTextField serverHost;
-    private JLabeledTextField serverPort;
     private AMFProxyControl amfProxyControl;
     JButton startButton;
     JButton stopButton;
@@ -34,10 +32,10 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
         setLayout(new BorderLayout());
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
-
+        JLabeledTextField proxyHost = new JLabeledTextField("AmfProxy Host:  ");
+        proxyHost.setText("localhost");
+        proxyHost.setEnabled(false);
         proxyPort = new JLabeledTextField("AmfProxy Port:  ");
-        serverHost = new JLabeledTextField("Server Host:    ");
-        serverPort = new JLabeledTextField(" Sever Port:");
 
         startButton = new JButton("Start");
         startButton.addActionListener(new StartListener());
@@ -53,17 +51,14 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
         mainPanel.add(proxyPanel, BorderLayout.NORTH);
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 1;
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
-        proxyPanel.add(proxyPort, c);
+        proxyPanel.add(proxyHost, c);
 
         c.gridy = 2;
-        proxyPanel.add(serverHost, c);
-
-        c.gridx = 1;
-        proxyPanel.add(serverPort, c);
+        proxyPanel.add(proxyPort, c);
 
         proxyPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Settings"));
 
@@ -94,8 +89,6 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
         super.configure(element);
         amfProxyControl = (AMFProxyControl) element;
         proxyPort.setText(amfProxyControl.getProxyPort());
-        serverHost.setText(amfProxyControl.getServerHost());
-        serverPort.setText(amfProxyControl.getServerPort());
     }
 
     public TestElement createTestElement() {
@@ -113,16 +106,12 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
         amfProxyControl = (AMFProxyControl) testElement;
         super.configureTestElement(amfProxyControl);
         amfProxyControl.setProxyPort(proxyPort.getText());
-        amfProxyControl.setServerHost(serverHost.getText());
-        amfProxyControl.setServerPort(serverPort.getText());
     }
 
     @Override
     public void clearGui() {
         super.clearGui();
         proxyPort.setText("");
-        serverHost.setText("");
-        serverPort.setText("");
     }
 
     @Override
