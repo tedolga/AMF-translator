@@ -1,32 +1,30 @@
-\documentclass[a4paper,14pt]{extreport} %размер бумаги устанавливаем А4, шрифт 12пунктов
-\renewcommand{\rmdefault}{ftm}
-\renewcommand{\baselinestretch}{1.5}
-\newcommand{\mychapter}[1]{\chapter*{#1} \addcontentsline{toc}{chapter}{#1} \refstepcounter{chapter}}\usepackage[T2A]{fontenc}
-\usepackage[utf8]{inputenc}%включаем кодировку utf8
-\usepackage[english,russian]{babel}%используем русский и английский языки с переносами
-\usepackage{amssymb,amsfonts,amsmath,mathtext,cite,enumerate,float} %подключаем нужные пакеты расширений
-\usepackage{graphicx} %хотим вставлять в диплом рисунки?
-\graphicspath{{fig/intro/}}%путь к рисункам
-\makeatletter
-\renewcommand{\@biblabel}[1]{#1.} % Заменяем библиографию с квадратных скобок на точку:
-\makeatother
+\documentclass[utf8x, 14pt]{G7-32} %размер бумаги устанавливаем А4, шрифт 14 пунктов
 
-\usepackage{geometry} % Меняем поля страницы
-\geometry{left=2.5cm}% левое поле
-\geometry{right=1cm}% правое поле
-\geometry{top=2cm}% верхнее поле
-\geometry{bottom=2.5cm}% нижнее поле
-
-\renewcommand{\theenumi}{\arabic{enumi}}% Меняем везде перечисления на цифра.цифра
-\renewcommand{\labelenumi}{\arabic{enumi}}% Меняем везде перечисления на цифра.цифра
-\renewcommand{\theenumii}{.\arabic{enumii}}% Меняем везде перечисления на цифра.цифра
-\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}% Меняем везде перечисления на цифра.цифра
-\renewcommand{\theenumiii}{.\arabic{enumiii}}% Меняем везде перечисления на цифра.цифра
-\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}% Меняем везде перечисления на цифра.цифра
+% Остальные стандартные настройки убраны в preamble-std.tex
+\include{preamble-std}
 
 \begin{document}
-\tableofcontents % это оглавление, которое генерируется автоматически
-\input{intro}% это введение
-\input{comparison}
-\input{development}
+
+\frontmatter % выключает нумерацию ВСЕГО; здесь начинаются ненумерованные главы: реферат, введение, глоссарий, сокращения и прочее
+
+% Команды \breakingbeforechapters и \nonbreakingbeforechapters
+% управляют разрывом страницы перед главами.
+% По-умолчанию страница разрывается.
+
+% \nobreakingbeforechapters
+% \breakingbeforechapters
+
+\include{00-abstract}
+
+\tableofcontents
+
+\include{10-defines}
+\include{11-abbrev}
+
+\input{12-intro}% это введение
+
+\mainmatter % это включает нумерацию глав и секций в документе ниже
+
+\input{20-analysis}
+\input{30-design}
 \end{document}

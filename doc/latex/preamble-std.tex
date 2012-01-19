@@ -1,0 +1,130 @@
+\sloppy
+
+% 1. Настройки стиля ГОСТ 7-32
+% Для начала определяем, хотим мы или нет, чтобы рисунки и таблицы нумеровались в пределах раздела, или нам нужна сквозная нумерация.
+% А не забыл ли автор букву 't' ?
+\EqInChapter % формулы будут нумероваться в пределах раздела
+\TableInChapter % таблицы будут нумероваться в пределах раздела
+\PicInChapter % рисунки будут нумероваться в пределах раздела
+
+% 2. Добавляем гипертекстовое оглавление в PDF
+\usepackage[
+bookmarks=true, colorlinks=true, unicode=true,
+urlcolor=black,linkcolor=black, anchorcolor=black,
+citecolor=black, menucolor=black, filecolor=black,
+]{hyperref}
+
+% 3. Изменение начертания шрифта --- после чего выглядит таймсоподобно.
+% apt-get install scalable-cyrfonts-tex
+
+\IfFileExists{cyrtimes.sty}
+    {
+        \usepackage{cyrtimespatched}
+    }
+    {
+        % А если Times нету, то будет CM...
+    }
+
+
+% 4. Прочие полезные пакеты.
+\usepackage{underscore} % Ура! Теперь можно писать подчёркивание.
+                        % И нельзя использовать подчёркивание в файлах.
+                        % Выбирай, но осторожно.
+
+\usepackage{graphicx}   % Пакет для включения рисунков
+
+ % 5. Любимые команды
+\newcommand{\Code}[1]{\textbf{#1}}
+
+% 6. Поля
+% С такими оно полями оно работает по-умолчанию:
+% \RequirePackage[left=20mm,right=10mm,top=20mm,bottom=20mm,headsep=0pt]{geometry}
+% Если вас тошнит от поля в 10мм --- увеличивайте до 20-ти, ну и про переплёт не забывайте:
+\geometry{right=20mm}
+\geometry{left=30mm}
+
+
+% 7. Tikz
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning,shadows}
+
+% 8 Листинги
+
+\usepackage{listings}
+
+% Значения по умолчанию
+\lstset{
+  basicstyle= \footnotesize,
+  breakatwhitespace=true,% разрыв строк только на whitespacce
+  breaklines=true,       % переносить длинные строки
+%   captionpos=b,          % подписи снизу -- вроде не надо
+  inputencoding=koi8-r,
+  numbers=left,          % нумерация слева
+  numberstyle=\footnotesize,
+  showspaces=false,      % показывать пробелы подчеркиваниями -- идиотизм 70-х годов
+  showstringspaces=false,
+  showtabs=false,        % и табы тоже
+  stepnumber=1,
+  tabsize=4,              % кому нужны табы по 8 символов?
+  frame=single
+}
+
+% Стиль для псевдокода: строчки обычно короткие, поэтому размер шрифта побольше
+\lstdefinestyle{pseudocode}{
+  basicstyle=\small,
+  keywordstyle=\color{black}\bfseries\underbar,
+  language=Pseudocode,
+  numberstyle=\footnotesize,
+  commentstyle=\footnotesize\it
+}
+
+% Стиль для обычного кода: маленький шрифт
+\lstdefinestyle{realcode}{
+  basicstyle=\scriptsize,
+  numberstyle=\footnotesize
+}
+
+% Стиль для коротких кусков обычного кода: средний шрифт
+\lstdefinestyle{simplecode}{
+  basicstyle=\footnotesize,
+  numberstyle=\footnotesize
+}
+
+% Стиль для BNF
+\lstdefinestyle{grammar}{
+  basicstyle=\footnotesize,
+  numberstyle=\footnotesize,
+  stringstyle=\bfseries\ttfamily,
+  language=BNF
+}
+
+% Определим свой язык для написания псевдокодов на основе Python
+\lstdefinelanguage[]{Pseudocode}[]{Python}{
+  morekeywords={each,empty,wait,do},% ключевые слова добавлять сюда
+  morecomment=[s]{\{}{\}},% комменты {а-ля Pascal} смотрятся нагляднее
+  literate=% а сюда добавлять операторы, которые хотите отображать как мат. символы
+    {->}{\ensuremath{$\rightarrow$}~}2%
+    {<-}{\ensuremath{$\leftarrow$}~}2%
+    {:=}{\ensuremath{$\leftarrow$}~}2%
+    {<--}{\ensuremath{$\Longleftarrow$}~}2%
+}[keywords,comments]
+
+% Свой язык для задания грамматик в BNF
+\lstdefinelanguage[]{BNF}[]{}{
+  morekeywords={},
+  morecomment=[s]{@}{@},
+  morestring=[b]",%
+  literate=%
+    {->}{\ensuremath{$\rightarrow$}~}2%
+    {*}{\ensuremath{$^*$}~}2%
+    {+}{\ensuremath{$^+$}~}2%
+    {|}{\ensuremath{$|$}~}2%
+}[keywords,comments,strings]
+
+% Подписи к листингам на русском языке.
+\renewcommand*\thelstnumber{\oldstylenums{\the\value{lstnumber}}}
+\renewcommand\lstlistingname{\cyr\CYRL\cyri\cyrs\cyrt\cyri\cyrn\cyrg}
+\renewcommand\lstlistlistingname{\cyr\CYRL\cyri\cyrs\cyrt\cyri\cyrn\cyrg\cyri}
+
+% Произвольная нумерация списков.
+\usepackage{enumerate}
