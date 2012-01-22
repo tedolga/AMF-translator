@@ -32,6 +32,18 @@ citecolor=black, menucolor=black, filecolor=black,
                         % Выбирай, но осторожно.
 
 \usepackage{graphicx}   % Пакет для включения рисунков
+\usepackage{pdfpages} % Пакет для включения pdf файлов
+\usepackage[utf8x]{inputenc}
+\usepackage{lscape} % Меняем ориентацию страницы
+\usepackage{rotating}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{longtable}
+\usepackage{multirow}
+
+\newcolumntype{x}[1]
+{>{\raggedright}p{#1}}
+\newcommand{\tn}{\tabularnewline}
 
  % 5. Любимые команды
 \newcommand{\Code}[1]{\textbf{#1}}
@@ -58,15 +70,18 @@ citecolor=black, menucolor=black, filecolor=black,
   breakatwhitespace=true,% разрыв строк только на whitespacce
   breaklines=true,       % переносить длинные строки
 %   captionpos=b,          % подписи снизу -- вроде не надо
-  inputencoding=koi8-r,
+  inputencoding=utf8x,
+  keepspaces = true,     % чтобы не удалялись пробелы в русских коментариях
+  extendedchars=false,
   numbers=left,          % нумерация слева
   numberstyle=\footnotesize,
   showspaces=false,      % показывать пробелы подчеркиваниями -- идиотизм 70-х годов
   showstringspaces=false,
   showtabs=false,        % и табы тоже
   stepnumber=1,
-  tabsize=4,              % кому нужны табы по 8 символов?
-  frame=single
+  tabsize=2,              % кому нужны табы по 8 символов?
+  frame=single,
+  language=Java
 }
 
 % Стиль для псевдокода: строчки обычно короткие, поэтому размер шрифта побольше

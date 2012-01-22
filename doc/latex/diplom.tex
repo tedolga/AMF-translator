@@ -4,6 +4,7 @@
 \include{preamble-std}
 
 \begin{document}
+\includepdf[pagecommand=\thispagestyle{empty}]{import/title} %вставляю pdf титульник, сгенерированный из вордовского файла
 
 \frontmatter % выключает нумерацию ВСЕГО; здесь начинаются ненумерованные главы: реферат, введение, глоссарий, сокращения и прочее
 
@@ -27,4 +28,18 @@
 
 \input{20-analysis}
 \input{30-design}
+\input{35-implement}
+\input{40-economy}
+
+\backmatter %% Здесь заканчивается нумерованная часть документа и начинаются ссылки и
+            %% заключение
+
+\include{80-conclusion}
+
+\include{81-biblio}
+
+\appendix   % Тут идут приложения
+
+\include{90-appendix1}
+
 \end{document}

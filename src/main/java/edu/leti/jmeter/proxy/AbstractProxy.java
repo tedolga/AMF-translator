@@ -9,24 +9,13 @@ package edu.leti.jmeter.proxy;
 public abstract class AbstractProxy implements ProxyInterface {
 
     protected final int localPort;
-    protected final String remoteHost;
-    protected final int remotePort;
 
-    public AbstractProxy(int proxyPort, int serverPort, String serverHost) {
+    public AbstractProxy(int proxyPort) {
         localPort = proxyPort;
-        remotePort = serverPort;
-        remoteHost = serverHost;
     }
 
+    @Override
     public int getLocalPort() {
         return localPort;
-    }
-
-    public String getRemoteHost() {
-        return remoteHost;
-    }
-
-    public int getRemotePort() {
-        return remotePort;
     }
 }

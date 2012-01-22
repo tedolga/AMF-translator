@@ -39,7 +39,7 @@ public class AmfHttpProxy extends AbstractProxy implements Runnable {
      * @param deliverer используется для передачи параметров перехваченного запроса в {@link AMFProxyControl}
      */
     public AmfHttpProxy(int proxyPort, String serverHost, int serverPort, SamplerDeliverer deliverer) {
-        super(proxyPort, serverPort, serverHost);
+        super(proxyPort);
         this.deliverer = deliverer;
     }
 

@@ -17,11 +17,11 @@ public class MessageDecoderUseCase {
         try {
             inputStream = loader.getResourceAsStream("Registration.binary");
             decoder.getActionMessage(inputStream);
-            message = decoder.getTrace(inputStream);
+//            message = decoder.getTrace(inputStream);
         } finally {
             if (inputStream != null)
                 inputStream.close();
         }
-        System.out.println(message);
+//        System.out.println(message);
     }
 }
