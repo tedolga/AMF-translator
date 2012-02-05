@@ -124,6 +124,7 @@ public class AmfRPCSampler extends AbstractSampler {
             try {
                 amfConnection = new AMFConnection();
                 amfConnection.connect(getEndpointUrl());
+                AMF_CONNECTION_THREAD_LOCAL.set(amfConnection);
             } catch (ClientStatusException e) {
                 logger.error("Couldn't connect to " + getEndpointUrl(), e);
             }
