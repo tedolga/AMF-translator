@@ -1,4 +1,4 @@
-\chapter{Набор тест-кейзов для приложения <<Модуль для тестирования взаимодействия Flex приложений с сервером через AMF>>}
+\chapter{Сценарии тестирования приложения <<Модуль для тестирования взаимодействия Flex приложений с сервером через AMF>>}
 \label{cha:appendix3}
 
 \section{Настройка тестового окружения}
@@ -15,11 +15,11 @@ JMETER\_HOME/lib/ext;
 каталоге JMETER\_HOME/bin.
 \end{enumerate}
 
-\section{Тесты}
+\section{Функциональные тесты}
 
 \subsection{Проверка записи тестовых запросов}
 
-\subsubsection{Предусловия}
+Предусловия:
 
 \begin{enumerate}
 \item Добавить элемент AMF Proxy Server (WorkBench > Add > Non-Test Elements > AMF Proxy Server);
@@ -37,7 +37,7 @@ JMETER\_HOME/lib/ext;
 \item Далее открыть в браузере Flex приложение;
 \end{enumerate}
 
-\subsubsection{Шаги теста}
+Шаги теста:
 
 \begin{enumerate}
 \item Запустить прокси-сервер, нажав кнопку "Start"
@@ -45,7 +45,7 @@ JMETER\_HOME/lib/ext;
 \item Завершить запись тестовых запросов, нажав кнопку "Stop"
 \end{enumerate}
 
-\subsubsection{Ожидаемый результат}
+Ожидаемый результат:
 
 \begin{enumerate}
 \item  После завершения записи тестов, в дереве элементов JMeter в качестве дочернего элемента AMF Proxy Server
@@ -76,14 +76,14 @@ JMETER\_HOME/lib/ext;
 
 \subsection{Проверка отправки корректного AMF запроса через AMF RPC Sampler}
 
-\subsubsection{Предусловия}
+Предусловия:
 
 \begin{enumerate}
 \item Добавить в Test Plan группу потоков - Thread Group (Test Plan > Threads (Users) > Thread Group).
 
 \begin{figure}[ht]
 \center{\includegraphics[height=120mm, width=160mm]{fig/development/testplan.png}}
-\caption{Создание тест-плана}
+\caption{Создание группы потоков}
 \label{ris:testplan.png}
 \end{figure}
 
@@ -102,7 +102,7 @@ JMETER\_HOME/lib/ext;
 Add > Listener > View Results Tree)
 \end{enumerate}
 
-\subsubsection{Шаги теста}
+Шаги теста:
 
 \begin{enumerate}
 \item В Thread Group в качестве дочернего элемента добавить AMF RPC Sampler;
@@ -110,12 +110,105 @@ Add > Listener > View Results Tree)
 \item C помощью браузера ввести те же самые данные во Flex приложение и вызвать метод удалённого объекта.
 \end{enumerate}
 
-\subsubsection{Ожидаемый результат}
+Ожидаемый результат:
 
 \begin{enumerate}
 \item После завершения прогона тестов во View Results Tree в дереве элементов тест плана элемент AMF RPC Sampler
-посвечен зелёным цветом (выполнен успешно);
+посдвечен зелёным цветом (выполнен успешно);
 \item на вкладках View Results Tree присутствуют данные запроса и полученного от сервера ответа;
 \item Ответ сервера должен быть тем же, что был получен во время вызова процедуры через браузер.
+\end{enumerate}
+
+\begin{figure}[ht]
+\center{\includegraphics[height=120mm, width=160mm]{fig/development/positiveTest.png}}
+\caption{Результаты корректного теста}
+\label{ris:positiveTest.png}
+\end{figure}
+
+\subsection{Проверка отправки некорректного AMF запроса через AMF RPC Sampler}
+
+Предусловия:
+
+\begin{enumerate}
+\item Добавить в Test Plan группу потоков - Thread Group (Test Plan > Threads (Users) > Thread Group).
+\item Задать для Thread Group следующие параметры:
+
+\begin{enumerate}
+\item Действие, которое будут производиться в случае, если в тест выполняется с ошибкой
+(Action to be taken after a Sampler error) --- Continue ;
+\item число потоков, в которое будут запускаться шаги тест-плана (Number of Threads) установить равным единице;
+\item Интервал, в течение которого будет запущено указанное в предыдущем параметре
+число потоков (Ramp-Up Period) установить равным единице;
+\item Число повторений набора тестов (Loop Count) установить равным единице;
+\end{enumerate}
+
+\item добавить визуалайзер результатов, чтобы иметь возможность отслеживать ход выполнения теста (Thread Group >
+Add > Listener > View Results Tree)
+\end{enumerate}
+
+Шаги теста:
+
+\begin{enumerate}
+\item В Thread Group в качестве дочернего элемента добавить AMF RPC Sampler;
+\item Ввести в AMF RPC Sampler неверное имя метода удалённого объекта и запустить содержимое элемента Test Plan (Run > Start);
+\end{enumerate}
+
+Ожидаемый результат:
+
+\begin{enumerate}
+\item После завершения прогона тестов во View Results Tree в дереве элементов тест плана элемент AMF RPC Sampler
+подсвечен красным цветом (тест не пройден);
+\item на вкладках View Results Tree присутствуют данные запроса и полученного от сервера ответа;
+\item Ответ сервера должен содержать сообщение о соответсвующей ошибке.
+
+\begin{figure}[ht]
+\center{\includegraphics[height=120mm, width=160mm]{fig/development/negativeTest.png}}
+\caption{Результаты некорректного теста}
+\label{ris:negativeTest.png}
+\end{figure}
+
+\end{enumerate}
+
+\subsection{Проверка отправки некорректного AMF запроса через AMF RPC Sampler}
+
+Предусловия:
+
+\begin{enumerate}
+\item Добавить в Test Plan группу потоков - Thread Group (Test Plan > Threads (Users) > Thread Group).
+\item Задать для Thread Group следующие параметры:
+
+\begin{enumerate}
+\item Действие, которое будут производиться в случае, если в тест выполняется с ошибкой
+(Action to be taken after a Sampler error) --- Continue ;
+\item число потоков, в которое будут запускаться шаги тест-плана (Number of Threads) установить равным единице;
+\item Интервал, в течение которого будет запущено указанное в предыдущем параметре
+число потоков (Ramp-Up Period) установить равным единице;
+\item Число повторений набора тестов (Loop Count) установить равным единице;
+\end{enumerate}
+
+\item добавить визуалайзер результатов, чтобы иметь возможность отслеживать ход выполнения теста (Thread Group >
+Add > Listener > View Results Tree)
+\end{enumerate}
+
+Шаги теста:
+
+\begin{enumerate}
+\item В Thread Group в качестве дочернего элемента добавить AMF RPC Sampler;
+\item Ввести в AMF RPC Sampler неверное имя метода удалённого объекта и запустить содержимое элемента Test Plan (Run > Start);
+\end{enumerate}
+
+Ожидаемый результат:
+
+\begin{enumerate}
+\item После завершения прогона тестов во View Results Tree в дереве элементов тест плана элемент AMF RPC Sampler
+подсвечен красным цветом (тест не пройден);
+\item на вкладках View Results Tree присутствуют данные запроса и полученного от сервера ответа;
+\item Ответ сервера должен содержать сообщение о соответсвующей ошибке.
+
+\begin{figure}[ht]
+\center{\includegraphics[height=120mm, width=160mm]{fig/development/negativeTest.png}}
+\caption{Результаты некорректного теста}
+\label{ris:negativeTest.png}
+\end{figure}
 
 \end{enumerate}
