@@ -1,4 +1,4 @@
-\chapter{Сценарии тестирования приложения <<Модуль для тестирования взаимодействия Flex приложений с сервером через AMF>>}
+\chapter{Сценарии тестирования приложения}
 \label{cha:appendix3}
 
 \section{Настройка тестового окружения}
@@ -169,7 +169,7 @@ Add > Listener > View Results Tree)
 
 \end{enumerate}
 
-\subsection{Проверка отправки некорректного AMF запроса через AMF RPC Sampler}
+\subsection{Проверка запуска содержимого Test Plan в несколько потоков}
 
 Предусловия:
 
@@ -180,7 +180,7 @@ Add > Listener > View Results Tree)
 \begin{enumerate}
 \item Действие, которое будут производиться в случае, если в тест выполняется с ошибкой
 (Action to be taken after a Sampler error) --- Continue ;
-\item число потоков, в которое будут запускаться шаги тест-плана (Number of Threads) установить равным единице;
+\item число потоков, в которое будут запускаться шаги тест-плана (Number of Threads) установить равным десяти;
 \item Интервал, в течение которого будет запущено указанное в предыдущем параметре
 число потоков (Ramp-Up Period) установить равным единице;
 \item Число повторений набора тестов (Loop Count) установить равным единице;
@@ -193,22 +193,12 @@ Add > Listener > View Results Tree)
 Шаги теста:
 
 \begin{enumerate}
-\item В Thread Group в качестве дочернего элемента добавить AMF RPC Sampler;
-\item Ввести в AMF RPC Sampler неверное имя метода удалённого объекта и запустить содержимое элемента Test Plan (Run > Start);
+\item В Thread Group в качестве дочерних элементов добавить около пяти элементов AMF RPC Sampler;
+\item Ввести в элементы AMF RPC Sampler все необходимые корректные параметры и запустить тест план;
 \end{enumerate}
 
 Ожидаемый результат:
 
-\begin{enumerate}
-\item После завершения прогона тестов во View Results Tree в дереве элементов тест плана элемент AMF RPC Sampler
-подсвечен красным цветом (тест не пройден);
-\item на вкладках View Results Tree присутствуют данные запроса и полученного от сервера ответа;
-\item Ответ сервера должен содержать сообщение о соответсвующей ошибке.
+ После завершения прогона тестов во View Results Tree в дереве элементов все тесты должны быть пройдены ---
+ корректный ответ от сервера должен быть получен для каждого элемента.
 
-\begin{figure}[ht]
-\center{\includegraphics[height=120mm, width=160mm]{fig/development/negativeTest.png}}
-\caption{Результаты некорректного теста}
-\label{ris:negativeTest.png}
-\end{figure}
-
-\end{enumerate}
