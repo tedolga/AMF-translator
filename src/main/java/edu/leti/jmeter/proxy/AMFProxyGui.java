@@ -98,7 +98,7 @@ public class AMFProxyGui extends LogicControllerGui implements UnsharedComponent
     }
 
     /**
-     * Метод передаёт в тестовый элемент из GUI необходимые параметры.
+     * Передаёт в тестовый элемент из GUI необходимые параметры.
      *
      * @param testElement тестовый элемент
      */

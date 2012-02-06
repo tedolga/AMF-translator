@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Панель параметров прокси сервера.
+ *
  * @author Tedikova O.
  * @version 1.0
  */
