@@ -1,6 +1,5 @@
 @startuml
 
-title I - Обработка amf запроса
 hide footbox
 
 activate AMFProxyControl
