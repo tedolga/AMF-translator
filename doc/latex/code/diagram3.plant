@@ -1,0 +1,55 @@
+@startuml
+
+package examples{
+note as N9
+Примеры, демонстрирующие
+использование компонентов
+end note
+}
+
+package org.apache.jorphan{
+}
+
+package JMeterServer {
+package "monitor"  #fefece {
+note as N0
+Элементы мониторинга 
+для Tomcat
+end note
+}
+}
+
+package JMeterFramework {
+package "core"  #fefece {
+note as N1
+Ядро JMeter
+end note
+}
+
+package "component"  #fefece {
+note as N8
+Общие элементы
+end note
+}
+
+package "functions"  #fefece {
+note as N6
+Стандартные функции 
+для всех компонентов
+end note 
+}
+package "protocols"  #fefece {
+note as N7
+Реализации различных
+протоколов
+end note 
+}
+}
+
+"core" .up.> org.apache.jorphan
+"component" .up.> "core"
+"component" .up.> "functions"
+"component" .up.> "protocols"
+"JMeterServer" .up.> "core"
+"examples" .up.> "component"
+@enduml
