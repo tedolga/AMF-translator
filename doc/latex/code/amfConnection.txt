@@ -1,0 +1,14 @@
+String url = "http://localhost:8400/team/messagebroker/amf";
+AMFConnection amfConnection = new AMFConnection();
+try {
+     amfConnection.connect(url);
+} catch (ClientStatusException e) {
+     logger.error("Couldn't connect to " + url, e);
+}
+try {
+     Object result = amfConnection.call("remoting_AMF.echo", "echo me1");
+} catch (ClientStatusException cse) {
+     handleException(cse);
+} catch (ServerStatusException sse) {
+     handleException(sse);
+}

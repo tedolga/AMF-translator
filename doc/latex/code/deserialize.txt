@@ -1,0 +1,7 @@
+AmfMessageDeserializer deserializer = new AmfMessageDeserializer();
+ActionMessage message = new ActionMessage();
+ActionContext context = new ActionContext();
+AmfTrace amfTrace = new AmfTrace();
+SerializationContext serializationContext = SerializationContext.getSerializationContext();
+deserializer.initialize(serializationContext, inputStream, amfTrace);
+deserializer.readMessage(message, context);
