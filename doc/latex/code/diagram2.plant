@@ -1,0 +1,20 @@
+@startuml
+
+object AMFProxyControl{
+startProxy()
+setProxy(String host, int port)
+}
+object AMFProxyGui{
+TestElement createTestElement()
+configure(TestElement el)
+modifyTestElement(TestElement e)
+}
+object TestElement{
+setProperty(String key, String value)
+String getProperty(String key)
+}
+
+AMFProxyGui o-- AMFProxyControl
+AMFProxyGui o-- TestElement
+
+@enduml
