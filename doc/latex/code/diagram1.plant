@@ -1,0 +1,23 @@
+@startuml
+
+title I - Обработка amf запроса
+hide footbox
+
+activate AMFProxyControl
+[-> AMFProxyControl: deliverSampler(sampler, subConfigs, result)
+
+AMFProxyControl -> MessageDecoder : getActionMessage(inputStream)
+
+loop avaible > 0
+
+MessageDecoder -> AmfRPCSampler : new
+note left
+	создает и заполняет
+	все необходимые поля
+end note
+
+AmfRPCSampler -> JMeterTreeNode : addComponent(amfRPCSampler, myTarget)
+
+end
+
+@enduml
