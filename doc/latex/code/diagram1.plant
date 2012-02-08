@@ -1,22 +1,27 @@
 @startuml
 
-hide footbox
-
 activate AMFProxyControl
 [-> AMFProxyControl: deliverSampler(sampler, subConfigs, result)
 
 AMFProxyControl -> MessageDecoder : getActionMessage(inputStream)
 
+activate MessageDecoder
+
 loop avaible > 0
 
+create AmfRPCSampler
 MessageDecoder -> AmfRPCSampler : new
 note left
 	создает и заполняет
 	все необходимые поля
 end note
 
+activate AmfRPCSampler
 AmfRPCSampler -> JMeterTreeNode : addComponent(amfRPCSampler, myTarget)
+deactivate AmfRPCSampler
 
 end
+
+deactivate MessageDecoder
 
 @enduml
