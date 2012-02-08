@@ -1,15 +1,16 @@
 @startuml
 
-actor JMeter
-
 JMeter -> AmfRPCSampler: sample(entry)
 activate AmfRPCSampler
 
 == Соединение ==
 
-AmfRPCSampler -> "BlaseDS server" : connect()
 
+
+AmfRPCSampler -> "BlaseDS server" : connect()
+activate "BlaseDS server"
 "BlaseDS server" -> AmfRPCSampler : ok
+deactivate "BlaseDS server"
 
 == Семплирование ==
 
@@ -19,7 +20,9 @@ AmfRPCSampler -> SampleResult : new
 
 AmfRPCSampler -> "BlaseDS server" : doSample(entry)
 
+activate "BlaseDS server"
 "BlaseDS server" -> AmfRPCSampler : responce
+deactivate "BlaseDS server"
 
 AmfRPCSampler -> JMeter : returnResult
 

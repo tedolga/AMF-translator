@@ -1,7 +1,8 @@
 @startuml
 
+JMeter -> AMFProxyControl: deliverSampler(sampler)
+
 activate AMFProxyControl
-[-> AMFProxyControl: deliverSampler(sampler, subConfigs, result)
 
 AMFProxyControl -> MessageDecoder : getActionMessage(inputStream)
 
@@ -16,12 +17,16 @@ note left
 	все необходимые поля
 end note
 
-activate AmfRPCSampler
-AmfRPCSampler -> JMeterTreeNode : addComponent(amfRPCSampler, myTarget)
-deactivate AmfRPCSampler
+MessageDecoder -> JMeterTreeNode : addComponent(amfRPCSampler)
 
 end
 
+MessageDecoder --> AMFProxyControl : ok
+
 deactivate MessageDecoder
+
+AMFProxyControl --> JMeter : ok
+
+deactivate AMFProxyControl
 
 @enduml
