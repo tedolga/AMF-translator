@@ -1,0 +1,123 @@
+\begin{thebibliography}{10}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\else\fi
+\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
+
+\bibitem{overview}
+\selectlanguageifdefined{english}
+\BibEmph{Е.А.~Симакович~Д.В.~Гарайс,~А.В.~Ямшанов}.
+  Обзор современных технологий создания RIA -
+  приложений~/ А.В.~Ямшанов~Е.А.~Симакович,
+  Д.В.~Гарайс~// Проект SWorld – международные
+  научно-практические
+  Интернет-конференции. ---
+\newblock 2010.
+
+\bibitem{modeling3}
+\selectlanguageifdefined{english}
+\BibEmph{Жирякова,~И.А.} FLEX технология
+  разработки интеракттивных WEB-приложений~/
+  И.А.~Жирякова~// \BibEmph{Математический
+  практикум для экономистов и инженеров}. ---
+\newblock 2011. ---
+\newblock Vol.~4. ---
+\newblock Pp.~86--91.
+
+\bibitem{modeling1}
+\selectlanguageifdefined{english}
+\BibEmph{А.Н.~Иванов~Д.В.~Кознов,~М.Г.~Тыжгеев}.
+  Моделирование интерфейса
+  полнофункцтональных WEB-приложений,
+  интенсивно работающих с данными~/
+  М.Г.~Тыжгеев~А.Н.~Иванов, Д.В.~Кознов~//
+  \BibEmph{Вестник Санкт-Петербургского
+  университета}. ---
+\newblock 2009. ---
+\newblock Vol.~3. ---
+\newblock Pp.~1--4.
+
+\bibitem{modeling2}
+\selectlanguageifdefined{english}
+\BibEmph{Михальченко,~Ю.А.} Применение RIA в
+  системах поддержки принятия решений~/
+  Ю.А.~Михальченко~// Молодые ученые в
+  решении актуальных проблем науки:
+  Всероссийская научно-практическая
+  конференция. Сборник статей студентов и
+  молодых ученых~/ СибГТУ. ---
+\newblock Vol.~4. ---
+\newblock г. Красноярск: 2009. ---
+\newblock Pp.~279--283.
+
+\bibitem{dot-com}
+\selectlanguageifdefined{english}
+\BibEmph{Савин,~Р.} Тестирование Дот Ком, или
+  Пособие по жестокому обращению с багами в
+  интернет-стартапах.~/ Р.~Савин. ---
+\newblock Дело, 2007.
+
+\bibitem{testing}
+\selectlanguageifdefined{english}
+\BibEmph{Канер,~С.} Тестирование программного
+  обеспечения. Фундоментальные концепции
+  менеджмена бизнес-приложений.~/ С.~Канер. ---
+\newblock ДиаСофт, 2001.
+
+\bibitem{ibmfuctional}
+\selectlanguageifdefined{english}
+\BibEmph{Комал~Мирчандани,~Шрути~Уджвал}.
+  Использование IBM Rational Functional Tester для
+  автоматизированного тестирования
+  глобализованных приложений. ---
+\newblock 2008. \BibUrl{
+  http://www.ibm.com/developerworks/ru/library/0925_mirchandani-ujjwal/index.h%
+tml}.
+
+\bibitem{idea-book}
+\selectlanguageifdefined{english}
+\BibEmph{С.C.~Давыдов,~А.Г.~Ефимов}. IntelliJ IDEA.
+  Профессиональное программирование на Java.
+  Наиболее полное руководство~/
+  А.Г.~Ефимов~С.C.~Давыдов. ---
+\newblock БХВ-Петербург, 2005.
+
+\bibitem{amf}
+\selectlanguageifdefined{english}
+Action Message Format 3 Specification. ---
+\newblock 2006. \BibUrl{
+  http://opensource.adobe.com/wiki/download/attachments/1114283/amf3_spec_05_0%
+5_08.pdf}.
+
+\bibitem{swebok}
+\selectlanguageifdefined{english}
+\BibEmph{Alain~Abran,~James W.~Moore}. Guide to the Software Engineering Body
+  of Knowledge~/ James W.~Moore~Alain~Abran. ---
+\newblock IEEEE, 2004.
+
+\bibitem{bek}
+\selectlanguageifdefined{english}
+\BibEmph{Бек,~К.} Экстремальное
+  программирование: разработка через
+  тестирование. Библиотека программиста.~/
+  К.~Бек. ---
+\newblock СПб: Питер, 2003. ---
+\newblock P.~224.
+
+\bibitem{stress}
+\selectlanguageifdefined{english}
+\BibEmph{Я.Г.~Лило,~Е.А.~Тюменцев}. Повторное
+  использование модульных тестов для
+  организации нагрузочного,
+  стресс-тестирования, тестирования
+  стабильности~/ Е.А.~Тюменцев~Я.Г.~Лило~//
+  \BibEmph{Математические структуры и
+  моделирование}. ---
+\newblock 2011. ---
+\newblock Vol.~24. ---
+\newblock Pp.~69--74.
+
+\end{thebibliography}
