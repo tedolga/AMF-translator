@@ -74,8 +74,7 @@
   автоматизированного тестирования
   глобализованных приложений. ---
 \newblock 2008. \BibUrl{
-  http://www.ibm.com/developerworks/ru/library/0925_mirchandani-ujjwal/index.h%
-tml}.
+  http://www.ibm.com/developerworks/ru/library/0925_mirchandani-ujjwal/index.html}.
 
 \bibitem{idea-book}
 \selectlanguageifdefined{english}
@@ -89,8 +88,7 @@ tml}.
 \selectlanguageifdefined{english}
 Action Message Format 3 Specification. ---
 \newblock 2006. \BibUrl{
-  http://opensource.adobe.com/wiki/download/attachments/1114283/amf3_spec_05_0%
-5_08.pdf}.
+  http://opensource.adobe.com/wiki/download/attachments/1114283/amf3_spec_05_05_08.pdf}.
 
 \bibitem{swebok}
 \selectlanguageifdefined{english}
